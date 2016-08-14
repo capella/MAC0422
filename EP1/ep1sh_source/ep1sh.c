@@ -10,6 +10,7 @@
 #define PATH_SIZE 1000
 #define CD_ERROR "Não foi possível mudar de diretório!\n"
 #define CHMOD_ERROR "Não foi possível mudar as permisões do arquivo `%s`!\n"
+#define CMD_NOT_FOUND_ERROR "Não encontramos o comando!\n"
 
 void process (char *str);
 
@@ -63,7 +64,7 @@ void process (char *str) {
     } else {
         if (fork() == 0) {
             execv (args[0], args);
-            printf("Não encontramos o comando!\n");
+            printf(CMD_NOT_FOUND_ERROR);
             exit(0);
         } else {
             wait(NULL);
