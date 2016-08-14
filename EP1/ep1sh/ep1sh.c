@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
 
         if (line_read && *line_read) 
             add_history (line_read);
-
+        printf("%s\n", line_read);
         process (line_read);
         free(line_read);
     } while (1);
