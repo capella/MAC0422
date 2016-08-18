@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/syscall.h>
 #include <string.h>
+#include <sys/syscall.h>
 
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -12,13 +12,14 @@
 #define CHMOD_ERROR "Não foi possível mudar as permisões do arquivo `%s`!\n"
 #define CMD_NOT_FOUND_ERROR "Não encontramos o comando!\n"
 
+/* Recebe a string str e processa a instrução dada nela. */
 void process (char *str);
 
 /* Recebe a string str e devolve um vetor de strings divide e o numero
-   (argc) de elementos nesse veotr */
-char **divide (char *argv, int *argc);
+   (argc) de elementos nesse vetor. */
+char **divide (char *str, int *argc);
 
-int main(int argc, char const *argv[]) {
+int main (int argc, char const *argv[]) {
     char *line_read;
     char *request;
     char *path;
@@ -42,6 +43,7 @@ int main(int argc, char const *argv[]) {
 
 void process (char *str) {
     char **args;
+    char **environ = {"PATH=/bin", (char*)0};
     int argc;
     unsigned int tmp;
 
@@ -63,8 +65,8 @@ void process (char *str) {
         printf("%d\n", geteuid());
     } else {
         if (fork() == 0) {
-            execv (args[0], args);
-            printf(CMD_NOT_FOUND_ERROR);
+            execve (args[0], args, environ);
+            printf (CMD_NOT_FOUND_ERROR);
             exit(0);
         } else {
             wait(NULL);
