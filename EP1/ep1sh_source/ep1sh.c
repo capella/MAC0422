@@ -1,8 +1,10 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/syscall.h>
+#include <sys/wait.h>
 
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -12,14 +14,18 @@
 #define CHMOD_ERROR "Não foi possível mudar as permisões do arquivo `%s`!\n"
 #define CMD_NOT_FOUND_ERROR "Não encontramos o comando!\n"
 
-/* Recebe a string str e processa a instrução dada nela. */
-void process (char *str);
+/* Recebe a string str e processa a instrução dada nela. Retorna 1
+ * se tem que finalizar o programa ou 0. */
+int process (char *str, char **env);
 
-/* Recebe a string str e devolve um vetor de strings divide e o numero
+/* Recebe a string str e devolve um vetor de strings make_args e o numero
    (argc) de elementos nesse vetor. */
-char **divide (char *str, int *argc);
+char **make_args (char *str, int *argc);
 
-int main (int argc, char const *argv[]) {
+/* Desaloca os argumentos criados */
+void clear_args (char **args);
+
+int main (int argc, char const *argv[], char *env[]) {
     char *line_read;
     char *request;
     char *path;
@@ -34,24 +40,28 @@ int main (int argc, char const *argv[]) {
 
         if (line_read && *line_read && line_read != 0) {
             add_history (line_read);
-            process (line_read);
+            if (process (line_read, env)) break;
         }
         free(line_read);
+        line_read = NULL;
     }
+    if (line_read != NULL) free (line_read);
+    clear_history ();
+    free (path);
+    free (request);
     return 0;
 }
 
-void process (char *str) {
+int process (char *str, char **env) {
     char **args;
-    char **environ = {"PATH=/bin", (char*)0};
     int argc;
     unsigned int tmp;
-
-    /* divide o texto*/
-    args = divide (str, &argc);
+    int ret = 0;
+    /* make_args o texto*/
+    args = make_args (str, &argc);
 
     if (strcmp(args[0], "exit") == 0) {
-        exit (0);
+        ret = 1;
     } else if (strcmp(args[0], "cd") == 0) {
         if (chdir(args[1]) != 0) {
             printf(CD_ERROR);
@@ -65,16 +75,18 @@ void process (char *str) {
         printf("%d\n", geteuid());
     } else {
         if (fork() == 0) {
-            execve (args[0], args, environ);
+            execve (args[0], args, env);
             printf (CMD_NOT_FOUND_ERROR);
-            exit(0);
+            ret = 1;
         } else {
             wait(NULL);
         }
     }
+    clear_args (args);
+    return ret;
 }
 
-char **divide (char *str, int *argc) {
+char **make_args (char *str, int *argc) {
     char ** result = NULL;
     char ** result_tmp = NULL;
     int result_s = 5;
@@ -98,3 +110,15 @@ char **divide (char *str, int *argc) {
     result[*argc] = (char *)0;
     return result;
 }
+
+void clear_args (char **args) {
+    int i = 0;
+    if (args == NULL) return;
+    while (args[i] != NULL) {
+      i++;
+      if (args[i] == NULL) continue;
+      free (args[i]);
+    }
+    free (args);
+}
+
