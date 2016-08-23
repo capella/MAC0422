@@ -112,13 +112,7 @@ char **make_args (char *str, int *argc) {
 }
 
 void clear_args (char **args) {
-    int i = 0;
     if (args == NULL) return;
-    while (args[i] != NULL) {
-      i++;
-      if (args[i] == NULL) continue;
-      free (args[i]);
-    }
     free (args);
 }
 
