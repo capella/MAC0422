@@ -3,13 +3,13 @@
 ## Parte I - Shell
 
 ### Rodar os comandos:
-- [ ] /bin/ls -l
-- [ ] /bin/date
-- [ ] ./ep1 <argumentos do EP1>
-- [ ] chmod <modo numérico> <arquivo no diretório atual>
-- [ ] id -u
+- [x] /bin/ls -l
+- [x] /bin/date
+- [x] ./ep1 <argumentos do EP1>
+- [x] chmod <modo numérico> <arquivo no diretório atual>
+- [x] id -u
 
-- [ ] Nome do diretório antes do comando
+- [x] Nome do diretório antes do comando
 
 ## Parte II - Simulador de processos
 
