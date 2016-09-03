@@ -14,8 +14,7 @@ void * nada (void *duracao);
 int main(int argc, char const *argv[]) {
     int tipo;
 
-    /* sscanf (argv[1],"%d",&tipo); */
-    tipo = 2;
+    sscanf (argv[1],"%d",&tipo);
 
     switch(tipo) {
         case 1:
@@ -37,8 +36,7 @@ int main(int argc, char const *argv[]) {
             break;
     }
 
-    /* load_file((void *)argv[2], nada); */
-    load_file("processos.txt", nada);
+    load_file((void *)argv[2], nada);
     p_exec("load_process", -1, 0, load, (void *)p_exec);
 
     p_init();

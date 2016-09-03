@@ -23,3 +23,4 @@ time2.o: time2/time2.c time2/time2.h
 clean:
 	$(RM) ep1
 	$(RM) *.o
+	find . -name "*.gch" -type f -delete
