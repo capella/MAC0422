@@ -6,25 +6,25 @@
 // Data: 2015-10-13
 // 
 ////////////////////////////////////////////////////////////// */
-#include "first-come-first-served.h"
+#include "fcfs.h"
 
-struct process {
+struct process_fcgs {
     char 			* name;
     int 			line;
     void 			*(*func) (void *);
     void 			* arg;
-    struct process 	* next;
+    struct process_fcgs 	* next;
 };
-typedef struct process * Process;
+typedef struct process_fcgs * ProcessFCFS;
 
-static Process head;
-int init = 0;
-int running = 0;
-pthread_mutex_t head_lock;
+static ProcessFCFS head;
+static int init = 0;
+static int running = 0;
+static pthread_mutex_t head_lock;
 /*static n = 1;*/
 
-void fcfs_exec(char *name, int line, void *(*func) (void *), void *arg) {
-	Process tmp, novo;
+void fcfs_exec(char *name, int line, double remaining, void *(*func) (void *), void *arg) {
+	ProcessFCFS tmp, novo;
 
 
 	if (init) pthread_mutex_lock(&head_lock);
@@ -35,7 +35,7 @@ void fcfs_exec(char *name, int line, void *(*func) (void *), void *arg) {
 
 	while (tmp != NULL && tmp->next != NULL) tmp = tmp->next;
 
-	novo = malloc(sizeof(struct process));
+	novo = malloc(sizeof(struct process_fcgs));
 	novo->name = name;
 	novo->line = line;
 	novo->func = func;
@@ -47,7 +47,7 @@ void fcfs_exec(char *name, int line, void *(*func) (void *), void *arg) {
 }
 
 static void * escalona (void * n) {
-	Process atual;
+	ProcessFCFS atual;
 	int *number;
 	int flag;
 
@@ -65,7 +65,6 @@ static void * escalona (void * n) {
 				printf("%.3lf\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
 
 			atual->func(atual->arg);
-
 
 			pthread_mutex_lock(&head_lock);
 			running--;
@@ -115,7 +114,7 @@ void fcfs_init() {
 }
 
 /* chamado em tempos em tesmpos pelo processo */
-void fcfs_run() {
-
+int fcfs_run() {
+	return 0;
 }
 

@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include "../time2/time2.h"
 
-void *load_file (void *filename);
+void *load_file (void *filename, void *(*) (void *));
 
 /* Le o arquivos com os processos (se nunca foi lido);
    Verifica o tempo de inicio dos processos e inicia sua execução caso seja a hora;

@@ -10,36 +10,27 @@
 #define MAX_PROCESS_SIZE 20
 
 struct p_load {
-    float	to;
+    double	to;
     char 	* name;
-    float   dt;
-    float	deadline;
+    double   dt;
+    double	deadline;
     int 	line;
 };
 typedef struct p_load * Load;
 
 Load *lista = NULL;
 int size, max_size, remaning;
+void *(*func) (void *);
 
-static void * nada (void *duracao) {
-	float * duration;
-	double init = time2();
-	unsigned long soma = 0;
-	duration = (float *)duracao;
-	while (init + * duration > time2()) {
-		soma++;
-	}
-	free(duracao);
-	return NULL;
-}
-
-void *load_file (void *filename) {
+void *load_file (void *filename, void *(*f) (void *)) {
 	FILE *entrada;
 	Load novo;
 	Load *tmp_lista;
-	float tmp_to, tmp_dt, tmp_deadline;
+	double tmp_to, tmp_dt, tmp_deadline;
 	char *tmp_name;
 	char *name;
+
+	func = f;
 
 	name = (char*)filename;
 	printf("Carregando arquivo %s\n", name);
@@ -52,10 +43,10 @@ void *load_file (void *filename) {
 	tmp_name = malloc (MAX_PROCESS_SIZE * sizeof(char));
 
 	while (1) {
-		if (fscanf(entrada, "%f", &tmp_to) == EOF) break;
+		if (fscanf(entrada, "%lf", &tmp_to) == EOF) break;
 		if (fscanf(entrada, "%s", tmp_name) == EOF) break;
-		if (fscanf(entrada, "%f", &tmp_dt) == EOF) break;
-		if (fscanf(entrada, "%f", &tmp_deadline) == EOF) break;
+		if (fscanf(entrada, "%lf", &tmp_dt) == EOF) break;
+		if (fscanf(entrada, "%lf", &tmp_deadline) == EOF) break;
 
 		size++;
 		if (size > max_size) {
@@ -85,21 +76,21 @@ void *load_file (void *filename) {
 void *(void (*)(char *, int, void *(*)(void*), void *))
 */
 void * load (void * exec) {
-	float *n;
+	double *n;
 	int i = 0;
 	double time;
 	int numero_executados = 0;
-	void (*p_exec)(char *, int, void *(*)(void *), void *);
-	p_exec = (void (*)(char *, int, void *(*)(void *),void *))exec;
+	void (*p_exec)(char *, int, double, void *(*)(void *), void *);
+	p_exec = (void (*)(char *, int, double, void *(*)(void *),void *))exec;
 	time = time2();
 
 	for (i = 0; i < size; ++i) {
 		if (lista[i] != NULL && lista[i]->to <= time) {
 			/* printf("%d %s\n", i,lista[i]->name); */
-			n = malloc(sizeof(float));
+			n = malloc(sizeof(double));
 			*n = lista[i]->dt;
 
-			p_exec(lista[i]->name, lista[i]->line, nada, (void *)n);
+			p_exec(lista[i]->name, lista[i]->line, *n, func, (void *)n);
 			remaning--;
 
 			free (lista[i]);
@@ -107,11 +98,12 @@ void * load (void * exec) {
 			numero_executados++;
 		}
 	}
+
 	if (numero_executados == 0) {
-		usleep(500000);
+		usleep(100000);
 	}
 	if (remaning > 0) {
-		p_exec("load_process", -1, load, (void *)p_exec);
+		p_exec("load_process", -1,  0.1, load, (void *)p_exec);
 	}
 	return NULL;
 }

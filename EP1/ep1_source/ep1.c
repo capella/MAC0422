@@ -2,23 +2,62 @@
 #include <unistd.h>
 #include <time.h>
 #include "load-process/load-process.h"
-#include "first-come-first-served/first-come-first-served.h"
+#include "fcfs/fcfs.h"
+#include "srtf/srtf.h"
 
 void (*p_init)();
-void (*p_run)(int);
-void (*p_exec)(char *, int, void *(*)(void *), void *);
-void nada (int pid, float durattion);
+int (*p_run)(int);
+void (*p_exec)(char *, int, double, void *(*)(void *), void *);
+
+void * nada (void *duracao);
 
 int main(int argc, char const *argv[]) {
+    int tipo;
 
-	p_init = &fcfs_init;
-	p_run = &fcfs_run;
-	p_exec = &fcfs_exec;
+    /* sscanf (argv[1],"%d",&tipo); */
+    tipo = 2;
 
-	load_file((void *)argv[1]);
-	p_exec("load_process", -1, load, (void *)p_exec);
+    switch(tipo) {
+        case 1:
+            p_init = &fcfs_init;
+            p_run = &fcfs_run;
+            p_exec = &fcfs_exec;
+            break; 
+        
+        case 2:
+            p_init = &srtf_init;
+            p_run = &srtf_run;
+            p_exec = &srtf_exec;
+            break;
 
-	p_init();
+        case 3:
+            p_init = &fcfs_init;
+            p_run = &fcfs_run;
+            p_exec = &fcfs_exec;
+            break;
+    }
 
-	return 0;
+    /* load_file((void *)argv[2], nada); */
+    load_file("processos.txt", nada);
+    p_exec("load_process", -1, 0.1, load, (void *)p_exec);
+
+    p_init();
+
+    return 0;
+}
+
+void * nada (void *duracao) {
+    double * duration;
+    double init = time2();
+    unsigned long soma = 0;
+    duration = (double *)duracao;
+    /* printf("%lf\n", *duration); */
+    while (init + * duration > time2()) {
+        soma++;
+        if (p_run(0)) {
+            * duration = * duration - time2() + init;
+            break;
+        }
+    }
+    return NULL;
 }
