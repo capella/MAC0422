@@ -34,7 +34,7 @@ void mufi_exec(char *name, int line, double remaining, int (*func) (void *), voi
     tmp = head;
 
     if (line >= 0) 
-        printf("%.3lf\t       IN '%s' (%d)\n",  time2(), name, line);
+        printf("%.3f\t       IN '%s' (%d)\n",  time2(), name, line);
 
     while (tmp != NULL && tmp->next != NULL) tmp = tmp->next;
 
@@ -70,9 +70,9 @@ static void * escalona (void * n) {
 
             if (atual->started == 0) {
                 atual->started = 1;
-                printf("%.3lf\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                printf("%.3f\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
             } else {
-                printf("%.3lf\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                printf("%.3f\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
             }
 
 
@@ -80,7 +80,7 @@ static void * escalona (void * n) {
 
             pthread_mutex_lock(&head_lock);
             if (return_value == 1) {
-                printf("%.3lf\t %3d > OUT '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                printf("%.3f\t %3d > OUT '%s' (%d)\n", time2(), *number, atual->name, atual->line);
                 tmp = head;
                 atual->next = NULL;
                 atual->priority += 1;
@@ -88,7 +88,7 @@ static void * escalona (void * n) {
                 if (head == NULL) head = atual;
                 else tmp->next = atual;
             } else {
-                printf("%.3lf\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                printf("%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
             }
             running--;
             pthread_mutex_unlock(&head_lock);
@@ -99,7 +99,7 @@ static void * escalona (void * n) {
             flag = running == 0 && head == NULL;
             pthread_mutex_unlock(&head_lock);
             if (flag) {
-                    printf("%.3lf\t %3d > OFF\n", time2(), *number);
+                    printf("%.3f\t %3d > OFF\n", time2(), *number);
                 return NULL;
             }
             /* usleep(500000); */

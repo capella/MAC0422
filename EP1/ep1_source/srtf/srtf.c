@@ -40,7 +40,7 @@ void srtf_exec(char *name, int line, double remaining, int (*func) (void *), voi
 	if (init) pthread_mutex_lock(&head_lock);
 
 	/* if (line >= 0 || 1) */
-		printf("%.3lf\t       NEW '%s' (%d)\n",  time2(), name, line);
+		printf("%.3f\t       NEW '%s' (%d)\n",  time2(), name, line);
 
 	novo = malloc(sizeof(struct process_strf));
 	novo->name = name;
@@ -98,9 +98,9 @@ static void * escalona (void * n) {
 
 			if (atual->line >= 0 || 1) {
 				if (atual->remaining == atual->original) {
-					printf("%.3lf\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+					printf("%.3f\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
 				} else {
-					printf("%.3lf\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+					printf("%.3f\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
 				}
 			}
 
@@ -111,7 +111,7 @@ static void * escalona (void * n) {
 			atual->remaining -= time2()-start;
 			/* adiciona processo novamente na fila */
 			if (return_value == 1) {
-				printf("%.3lf\t %3d > OUT '%s' (%d) F: %lf\n", time2(), *number, atual->name, atual->line,atual->remaining);
+				printf("%.3f\t %3d > OUT '%s' (%d) F: %lf\n", time2(), *number, atual->name, atual->line,atual->remaining);
 				atual->next = NULL;
 				if (head != NULL) {
 					p = head;
@@ -124,7 +124,7 @@ static void * escalona (void * n) {
 				   p->next = atual;
 				} else  head = atual;
 			} else {
-				printf("%.3lf\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+				printf("%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
 			}
 			running--;
 			pthread_mutex_unlock(&head_lock);
@@ -137,7 +137,7 @@ static void * escalona (void * n) {
 			flag = running == 0 && head == NULL;
 			pthread_mutex_unlock(&head_lock);
 			if (flag) {
-					printf("%.3lf\t %3d > OFF\n", time2(), *number);
+					printf("%.3f\t %3d > OFF\n", time2(), *number);
 				return NULL;
 			}
 			/* usleep(500000); */
