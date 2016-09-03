@@ -85,7 +85,7 @@ static void * escalona (void * n) {
 			}
 			/* usleep(500000); */
 			/* sleep(1); */
-			usleep(50000);
+			sleep2 (0.05);
 		}
 	}
 }

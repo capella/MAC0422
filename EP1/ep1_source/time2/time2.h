@@ -13,4 +13,6 @@
 
 double time2 ();
 
+void sleep2 (double sec);
+
 #endif

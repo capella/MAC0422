@@ -24,3 +24,10 @@ double time2 () {
 		return elapsed;
 	}
 }
+
+void sleep2 (double sec) {
+	struct timespec tim;
+	tim.tv_sec  = (int)sec;
+	tim.tv_nsec = (sec - (double)tim.tv_sec) * 1000000000L;
+	nanosleep(&tim , NULL);
+}

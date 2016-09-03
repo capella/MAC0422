@@ -11,7 +11,6 @@
 
 #include <stdlib.h> /* malloc, free, realloc, EXIT_SUCCESS */
 #include <stdio.h>  /* EOF, printf, getchar */
-#include <unistd.h>
 #include "../time2/time2.h"
 
 #define WAIT_TIME 0.5 /* segundos */
