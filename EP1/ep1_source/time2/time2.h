@@ -9,6 +9,8 @@
 #ifndef TIME2_H
 #define TIME2_H
 
+#include <stdio.h>
+#include <time.h>
 #include <sys/time.h>
 
 double time2 ();
