@@ -26,8 +26,8 @@ double time2 () {
 }
 
 void sleep2 (double sec) {
-	struct timespec tim;
+	struct timespec tim  = {0};
 	tim.tv_sec  = (int)sec;
 	tim.tv_nsec = (sec - (double)tim.tv_sec) * 1000000000L;
-	nanosleep(&tim , NULL);
+	nanosleep(&tim , (struct timespec *)NULL);
 }
