@@ -12,13 +12,13 @@ load-process.o: load-process/load-process.c load-process/load-process.h
 	$(CC) $(CFLAGS) -ansi -c $^
 
 fcfs.o: fcfs/fcfs.c fcfs/fcfs.h
-	$(CC) $(CFLAGS) -ansi -c $^
+	$(CC) $(CFLAGS) -ansi -c -pthread $^
 
 srtf.o: srtf/srtf.c srtf/srtf.h
-	$(CC) $(CFLAGS) -ansi -c $^
+	$(CC) $(CFLAGS) -ansi -c -pthread $^
 
 mufi.o: mufi/mufi.c mufi/mufi.h
-	$(CC) $(CFLAGS) -ansi -c $^
+	$(CC) $(CFLAGS) -ansi -c -pthread $^
 
 time2.o: time2/time2.c time2/time2.h
 	$(CC) $(CFLAGS) -ansi -c $^
