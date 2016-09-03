@@ -14,6 +14,8 @@
 #include <unistd.h>
 #include "../time2/time2.h"
 
+#define WAIT_TIME 0.5 /* segundos */
+
 void *load_file (void *filename, void *(*) (void *));
 
 /* Le o arquivos com os processos (se nunca foi lido);

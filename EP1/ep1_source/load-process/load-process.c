@@ -100,10 +100,10 @@ void * load (void * exec) {
 	}
 
 	if (numero_executados == 0) {
-		usleep(100000);
+		usleep(1000000*WAIT_TIME);
 	}
 	if (remaning > 0) {
-		p_exec("load_process", -1,  0.1, load, (void *)p_exec);
+		p_exec("load_process", -1,  0, load, (void *)p_exec);
 	}
 	return NULL;
 }

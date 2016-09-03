@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
 
     /* load_file((void *)argv[2], nada); */
     load_file("processos.txt", nada);
-    p_exec("load_process", -1, 0.1, load, (void *)p_exec);
+    p_exec("load_process", -1, 0, load, (void *)p_exec);
 
     p_init();
 

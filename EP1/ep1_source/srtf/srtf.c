@@ -25,13 +25,15 @@ static int running = 0;
 static pthread_mutex_t head_lock;
 static int *notify;
 static pthread_t *threads_ids;
-static int threads;
+static long threads;
+
+static int maior_em_exec;
+static double maior_em_exec_end;
 /*static n = 1;*/
 
 void srtf_exec(char *name, int line, double remaining, void *(*func) (void *), void *arg) {
 	ProcessSTRF p, q, novo;
 	pthread_t my_id;
-	int i;
 
 	my_id = pthread_self();
 
@@ -63,16 +65,10 @@ void srtf_exec(char *name, int line, double remaining, void *(*func) (void *), v
 	   p->next = novo;
 	}
 
-	for (i = 0; i < threads; ++i) {
-		if (my_id != threads_ids[i]) {
-			notify[i] = 1;
+	if (init) {
+		if (running == threads) {
+			notify[maior_em_exec] = 1;
 		}
-	}
-
-	p = head;
-	while (p != NULL) {
-		printf(">%s %lf\n", p->name, p->remaining);
-		p = p->next;
 	}
 
 	if (init) pthread_mutex_unlock(&head_lock);
@@ -86,12 +82,16 @@ static void * escalona (void * n) {
 
 	number = (int *)n;
 	while (1) {
-		/* tiro ele da fila */
+		/* tira ele da fila */
 		pthread_mutex_lock(&head_lock);
 		if (head != NULL) {
 			atual = head;
 			head = head->next;
 			running++;
+			if (maior_em_exec_end < time2()+atual->remaining) {
+				maior_em_exec = *number;
+				maior_em_exec_end = time2()+atual->remaining;
+			}
 			pthread_mutex_unlock(&head_lock);
 
 			if (atual->line >= 0 || 1) {
@@ -108,8 +108,8 @@ static void * escalona (void * n) {
 			pthread_mutex_lock(&head_lock);
 			atual->remaining -= time2()-start;
 			/* adiciona processo novamente na fila */
-			if (atual->remaining > 0 && atual->line >= 0) {
-				printf("%.3lf\t %3d > OUT '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+			if (atual->remaining > 0) {
+				printf("%.3lf\t %3d > OUT '%s' (%d) F: %lf\n", time2(), *number, atual->name, atual->line,atual->remaining);
 				atual->next = NULL;
 				if (head != NULL) {
 					p = head;
@@ -121,8 +121,9 @@ static void * escalona (void * n) {
 				   atual->next = q;
 				   p->next = atual;
 				} else  head = atual;
-			} else if (atual->line >= 0)
+			} else {
 				printf("%.3lf\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+			}
 			running--;
 			pthread_mutex_unlock(&head_lock);
 
@@ -183,4 +184,3 @@ int srtf_run() {
 	}
 	return 0;
 }
-
