@@ -78,7 +78,7 @@ int load (void * exec) {
 	double time;
 	int numero_executados = 0;
 	void (*p_exec)(char *, int, double, int (*)(void *), void *);
-	p_exec = (void (*)(char *, int, double, int (*)(void *),void *))&exec;
+	p_exec = (void (*)(char *, int, double, int (*)(void *),void *))exec;
 	time = time2();
 
 	for (i = 0; i < size; ++i) {

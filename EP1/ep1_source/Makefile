@@ -15,10 +15,10 @@ fcfs.o: fcfs/fcfs.c fcfs/fcfs.h
 	$(CC) $(CFLAGS) -ansi -c $^
 
 srtf.o: srtf/srtf.c srtf/srtf.h
-	$(CC) $(CFLAGS) -ansi -c -pthread $^
+	$(CC) $(CFLAGS) -ansi -c $^
 
 mufi.o: mufi/mufi.c mufi/mufi.h
-	$(CC) $(CFLAGS) -ansi -c -pthread $^
+	$(CC) $(CFLAGS) -ansi -c $^
 
 time2.o: time2/time2.c time2/time2.h
 	$(CC) $(CFLAGS) -ansi -c $^
