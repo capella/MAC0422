@@ -16,7 +16,7 @@
 #include "../time2/time2.h"
 
 /* Adiciona um novo processo a fila de execucao */
-void fcfs_exec(char *name, int line, double remaining, void *(*func) (void *), void *arg);
+void fcfs_exec(char *name, int line, double remaining, int (*func) (void *), void *arg);
 
 /* Inicia o escalonador. precisa ter um processo na fila antes de iniciar */
 void fcfs_init();

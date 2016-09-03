@@ -15,13 +15,15 @@
 #include <pthread.h>
 #include "../time2/time2.h"
 
+#define QUANTON 0.5
+
 /* Adiciona um novo processo a fila de execucao */
-void srtf_exec(char *name, int line, double remaining, void *(*func) (void *), void *arg);
+void mufi_exec(char *name, int line, double remaining, int (*func) (void *), void *arg);
 
 /* Inicia o escalonador. precisa ter um processo na fila antes de iniciar */
-void srtf_init();
+void mufi_init();
 
 /* chamado em tempos em tesmpos pelo processo */
-int srtf_run();
+int mufi_run();
 
 #endif

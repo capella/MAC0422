@@ -4,12 +4,13 @@
 #include "load-process/load-process.h"
 #include "fcfs/fcfs.h"
 #include "srtf/srtf.h"
+#include "mufi/mufi.h"
 
 void (*p_init)();
 int (*p_run)(int);
-void (*p_exec)(char *, int, double, void *(*)(void *), void *);
+void (*p_exec)(char *, int, double, int (*)(void *), void *);
 
-void * nada (void *duracao);
+int nada (void *duracao);
 
 int main(int argc, char const *argv[]) {
     int tipo;
@@ -30,9 +31,9 @@ int main(int argc, char const *argv[]) {
             break;
 
         case 3:
-            p_init = &fcfs_init;
-            p_run = &fcfs_run;
-            p_exec = &fcfs_exec;
+            p_init = &mufi_init;
+            p_run = &mufi_run;
+            p_exec = &mufi_exec;
             break;
     }
 
@@ -44,7 +45,7 @@ int main(int argc, char const *argv[]) {
     return 0;
 }
 
-void * nada (void *duracao) {
+int nada (void *duracao) {
     double * duration;
     double init = time2();
     unsigned long soma = 0;
@@ -52,10 +53,14 @@ void * nada (void *duracao) {
     /* printf("%lf\n", *duration); */
     while (init + * duration > time2()) {
         soma++;
+
+        /* pergunta para o escalonador se pode continuar rodando */
         if (p_run(0)) {
             * duration = * duration - time2() + init;
-            break;
+            /* retorna 1 para sinalizar que o processo deve ser interompido */
+            return 1;
         }
     }
-    return NULL;
+    /* processo finalizado */
+    return 0;
 }

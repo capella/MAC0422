@@ -11,7 +11,7 @@
 struct process_strf {
     char 			* name;
     int 			line;
-    void 			*(*func) (void *);
+    int 			(*func) (void *);
     float 			remaining;
     float 			original;
     void 			* arg;
@@ -31,7 +31,7 @@ static int maior_em_exec;
 static double maior_em_exec_end;
 /*static n = 1;*/
 
-void srtf_exec(char *name, int line, double remaining, void *(*func) (void *), void *arg) {
+void srtf_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
 	ProcessSTRF p, q, novo;
 	pthread_t my_id;
 
@@ -66,7 +66,8 @@ void srtf_exec(char *name, int line, double remaining, void *(*func) (void *), v
 	}
 
 	if (init) {
-		if (running == threads) {
+		/* retira um processo se ele demorar menos que algum e não tiver cpu livres */
+		if (running == threads && novo->remaining+time2() < maior_em_exec) {
 			notify[maior_em_exec] = 1;
 		}
 	}
@@ -79,6 +80,7 @@ static void * escalona (void * n) {
 	int *number;
 	int flag;
 	double start;
+	int return_value;
 
 	number = (int *)n;
 	while (1) {
@@ -103,12 +105,12 @@ static void * escalona (void * n) {
 			}
 
 			start = time2();
-			atual->func(atual->arg);
+			return_value = atual->func(atual->arg);
 
 			pthread_mutex_lock(&head_lock);
 			atual->remaining -= time2()-start;
 			/* adiciona processo novamente na fila */
-			if (atual->remaining > 0) {
+			if (return_value == 1) {
 				printf("%.3lf\t %3d > OUT '%s' (%d) F: %lf\n", time2(), *number, atual->name, atual->line,atual->remaining);
 				atual->next = NULL;
 				if (head != NULL) {
@@ -169,7 +171,7 @@ void srtf_init() {
 	}
 }
 
-/* chamado em tempos em tesmpos pelo processo */
+/* chamado em tempos em tempos pelo processo */
 int srtf_run() {
 	int i;
 	pthread_t my_id;

@@ -16,14 +16,14 @@
 
 #define WAIT_TIME 0.5 /* segundos */
 
-void *load_file (void *filename, void *(*) (void *));
+void load_file (void *filename, int (*) (void *));
 
 /* Le o arquivos com os processos (se nunca foi lido);
    Verifica o tempo de inicio dos processos e inicia sua execução caso seja a hora;
    Coloca ela mesmo na fila de processos; 
    void (*exec)(void) função do escalonador que cria os processos;
    void (*p) processo a ser criado */
-void * load (void * exec);
+int load (void * exec);
 
 #endif
 /* http://stackoverflow.com/questions/1789807/function-pointer-as-an-argument */

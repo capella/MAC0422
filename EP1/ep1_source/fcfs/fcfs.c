@@ -11,7 +11,7 @@
 struct process_fcgs {
     char 			* name;
     int 			line;
-    void 			*(*func) (void *);
+    int 			(*func) (void *);
     void 			* arg;
     struct process_fcgs 	* next;
 };
@@ -23,7 +23,7 @@ static int running = 0;
 static pthread_mutex_t head_lock;
 /*static n = 1;*/
 
-void fcfs_exec(char *name, int line, double remaining, void *(*func) (void *), void *arg) {
+void fcfs_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
 	ProcessFCFS tmp, novo;
 
 

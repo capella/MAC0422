@@ -8,179 +8,141 @@
 ////////////////////////////////////////////////////////////// */
 #include "mufi.h"
 
-struct process_strf {
-    char 			* name;
-    int 			line;
-    void 			*(*func) (void *);
-    float 			remaining;
-    float 			original;
-    void 			* arg;
-    struct process_strf 	* next;
+struct process_mufi {
+    char            * name;
+    int             line;
+    int             (*func) (void *);
+    void            * arg;
+    int             priority;
+    int             started; /* marca se já foi iniciado */
+    struct process_mufi     * next;
 };
-typedef struct process_strf * ProcessSTRF;
+typedef struct process_mufi * ProcessMUFI;
 
-static ProcessSTRF head;
+static ProcessMUFI head;
 static int init = 0;
 static int running = 0;
 static pthread_mutex_t head_lock;
-static int *notify;
 static pthread_t *threads_ids;
 static long threads;
+static double *end_time;
 
-static int maior_em_exec;
-static double maior_em_exec_end;
-/*static n = 1;*/
+void mufi_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
+    ProcessMUFI tmp, novo;
 
-void srtf_exec(char *name, int line, double remaining, void *(*func) (void *), void *arg) {
-	ProcessSTRF p, q, novo;
-	pthread_t my_id;
+    if (init) pthread_mutex_lock(&head_lock);
+    tmp = head;
 
-	my_id = pthread_self();
+    if (line >= 0) 
+        printf("%.3lf\t       IN '%s' (%d)\n",  time2(), name, line);
 
-	if (init) pthread_mutex_lock(&head_lock);
+    while (tmp != NULL && tmp->next != NULL) tmp = tmp->next;
 
-	/* if (line >= 0 || 1) */
-		printf("%.3lf\t       NEW '%s' (%d)\n",  time2(), name, line);
-
-	novo = malloc(sizeof(struct process_strf));
-	novo->name = name;
-	novo->line = line;
-	novo->func = func;
-	novo->remaining = remaining;
-	novo->original = remaining;
-	novo->arg = arg;
-	novo->next = NULL;
-
-	if (head == NULL || head->remaining > remaining) {
-		novo->next = head;
-		head = novo;
-	} else  {
-		p = head;
-		q = head->next;
-		while (q != NULL && q->remaining > remaining) {
-			p = q;
-			q = q->next;
-		}
-	   novo->next = q;
-	   p->next = novo;
-	}
-
-	if (init) {
-		if (running == threads) {
-			notify[maior_em_exec] = 1;
-		}
-	}
-
-	if (init) pthread_mutex_unlock(&head_lock);
+    novo = malloc(sizeof(struct process_mufi));
+    novo->name = name;
+    novo->line = line;
+    novo->func = func;
+    novo->arg = arg;
+    novo->next = NULL;
+    novo->priority = 1;
+    novo->started = 0;
+    if (head == NULL) head = novo;
+    else tmp->next = novo;
+    if (init) pthread_mutex_unlock(&head_lock);
 }
 
 static void * escalona (void * n) {
-	ProcessSTRF atual, p, q;
-	int *number;
-	int flag;
-	double start;
+    ProcessMUFI atual, tmp;
+    int *number;
+    int flag;
+    int return_value;
 
-	number = (int *)n;
-	while (1) {
-		/* tira ele da fila */
-		pthread_mutex_lock(&head_lock);
-		if (head != NULL) {
-			atual = head;
-			head = head->next;
-			running++;
-			if (maior_em_exec_end < time2()+atual->remaining) {
-				maior_em_exec = *number;
-				maior_em_exec_end = time2()+atual->remaining;
-			}
-			pthread_mutex_unlock(&head_lock);
+    number = (int *)n;
+    while (1) {
+        /* tiro ele da fila */
+        pthread_mutex_lock(&head_lock);
+        if (head != NULL) {
+            atual = head;
+            head = head->next;
+            running++;
+            end_time[*number] = time2() + atual->priority * QUANTON;
+            pthread_mutex_unlock(&head_lock);
 
-			if (atual->line >= 0 || 1) {
-				if (atual->remaining == atual->original) {
-					printf("%.3lf\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
-				} else {
-					printf("%.3lf\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
-				}
-			}
-
-			start = time2();
-			atual->func(atual->arg);
-
-			pthread_mutex_lock(&head_lock);
-			atual->remaining -= time2()-start;
-			/* adiciona processo novamente na fila */
-			if (atual->remaining > 0) {
-				printf("%.3lf\t %3d > OUT '%s' (%d) F: %lf\n", time2(), *number, atual->name, atual->line,atual->remaining);
-				atual->next = NULL;
-				if (head != NULL) {
-					p = head;
-					q = head->next;
-					while (q != NULL && q->remaining > atual->remaining) {
-						p = q;
-						q = q->next;
-					}
-				   atual->next = q;
-				   p->next = atual;
-				} else  head = atual;
-			} else {
-				printf("%.3lf\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
-			}
-			running--;
-			pthread_mutex_unlock(&head_lock);
+            if (atual->started == 0) {
+                atual->started = 1;
+                printf("%.3lf\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+            } else {
+                printf("%.3lf\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+            }
 
 
-			/*free (atual->name);
-			free (atual->arg);
-			free (atual);*/
-		} else {
-			flag = running == 0 && head == NULL;
-			pthread_mutex_unlock(&head_lock);
-			if (flag) {
-					printf("%.3lf\t %3d > OFF\n", time2(), *number);
-				return NULL;
-			}
-			/* usleep(500000); */
-			/* sleep(1); */
-			usleep(50000);
-		}
-	}
+            return_value = atual->func(atual->arg);
+
+            pthread_mutex_lock(&head_lock);
+            if (return_value == 1) {
+                printf("%.3lf\t %3d > OUT '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                tmp = head;
+                atual->next = NULL;
+                atual->priority += 1;
+                while (tmp != NULL && tmp->next != NULL) tmp = tmp->next;
+                if (head == NULL) head = atual;
+                else tmp->next = atual;
+            } else {
+                printf("%.3lf\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+            }
+            running--;
+            pthread_mutex_unlock(&head_lock);
+            /*free (atual->name);
+            free (atual->arg);
+            free (atual);*/
+        } else {
+            flag = running == 0 && head == NULL;
+            pthread_mutex_unlock(&head_lock);
+            if (flag) {
+                    printf("%.3lf\t %3d > OFF\n", time2(), *number);
+                return NULL;
+            }
+            /* usleep(500000); */
+            /* sleep(1); */
+            usleep(50000);
+        }
+    }
 }
 
-void srtf_init() {
-	int i;
-	int *cpu_n;
-	threads = sysconf(_SC_NPROCESSORS_ONLN);
 
-	threads_ids = malloc(sizeof(pthread_t) * threads);
-	cpu_n = malloc(sizeof(int) * threads);
-	notify = malloc(sizeof(int) * threads);
-	if (pthread_mutex_init(&head_lock, NULL) != 0) {
-		printf("Erro ao criar mutex!\n");
-	} else {
-		init = 1;
-		for (i = 0; i < threads; ++i) {
-			cpu_n[i] = i;
-			notify[i] = 0;
-			pthread_create(&threads_ids[i], NULL, escalona, &cpu_n[i]);
-		}
-		for (i = 0; i < threads; ++i) {
-			pthread_join(threads_ids[i], NULL);
-		}
-		pthread_mutex_destroy(&head_lock);
-	}
+void mufi_init() {
+    int i;
+    int *cpu_n;
+    threads = sysconf(_SC_NPROCESSORS_ONLN);
+
+    threads_ids = malloc(sizeof(pthread_t) * threads);
+    cpu_n = malloc(sizeof(int) * threads);
+    end_time = malloc(sizeof(double) * threads);
+    if (pthread_mutex_init(&head_lock, NULL) != 0) {
+        printf("Erro ao criar mutex!\n");
+    } else {
+        init = 1;
+        for (i = 0; i < threads; ++i) {
+            cpu_n[i] = i;
+            pthread_create(&threads_ids[i], NULL, escalona, &cpu_n[i]);
+        }
+        for (i = 0; i < threads; ++i) {
+            pthread_join(threads_ids[i], NULL);
+        }
+        pthread_mutex_destroy(&head_lock);
+    }
 }
 
 /* chamado em tempos em tesmpos pelo processo */
-int srtf_run() {
-	int i;
-	pthread_t my_id;
-	my_id = pthread_self();
-	for (i = 0; i < threads; ++i) {
-		if (my_id == threads_ids[i]) {
-			if (notify[i] == 1){
-				notify[i] = 0;
-				return 1;
-			}
-		}
-	}
-	return 0;
+int mufi_run() {
+    int i;
+    pthread_t my_id;
+    my_id = pthread_self();
+    for (i = 0; i < threads; ++i) {
+        if (my_id == threads_ids[i]) {
+            /* printf("%d > %lf - %lf\n", i, end_time[i], time2()); */
+            if (end_time[i] <= time2() && running == threads) return 1;
+        }
+    }
+    return 0;
 }

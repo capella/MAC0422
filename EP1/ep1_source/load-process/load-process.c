@@ -18,11 +18,11 @@ struct p_load {
 };
 typedef struct p_load * Load;
 
-Load *lista = NULL;
+Load *lista;
 int size, max_size, remaning;
-void *(*func) (void *);
+int (*func) (void *);
 
-void *load_file (void *filename, void *(*f) (void *)) {
+void load_file (void *filename, int (*f) (void *)) {
 	FILE *entrada;
 	Load novo;
 	Load *tmp_lista;
@@ -52,7 +52,6 @@ void *load_file (void *filename, void *(*f) (void *)) {
 		if (size > max_size) {
 			max_size *= 2;
 			tmp_lista = realloc (lista, max_size * sizeof(Load));
-			free (lista);
 			lista = tmp_lista;
 		}
 		novo = malloc(sizeof(struct p_load));
@@ -68,20 +67,18 @@ void *load_file (void *filename, void *(*f) (void *)) {
 	remaning = size;
 
 	/* printf("Arquivo carregado!\n"); */
-
-	return NULL;
 }
 
 /* função que chama, e funcao a ser chamada 
-void *(void (*)(char *, int, void *(*)(void*), void *))
+void *(void (*)(char *, int, int (*)(void*), void *))
 */
-void * load (void * exec) {
+int load (void * exec) {
 	double *n;
 	int i = 0;
 	double time;
 	int numero_executados = 0;
-	void (*p_exec)(char *, int, double, void *(*)(void *), void *);
-	p_exec = (void (*)(char *, int, double, void *(*)(void *),void *))exec;
+	void (*p_exec)(char *, int, double, int (*)(void *), void *);
+	p_exec = (void (*)(char *, int, double, int (*)(void *),void *))exec;
 	time = time2();
 
 	for (i = 0; i < size; ++i) {
@@ -105,5 +102,5 @@ void * load (void * exec) {
 	if (remaning > 0) {
 		p_exec("load_process", -1,  0, load, (void *)p_exec);
 	}
-	return NULL;
+	return 0;
 }
