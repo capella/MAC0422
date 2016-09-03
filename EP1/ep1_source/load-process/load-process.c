@@ -7,7 +7,7 @@
 // 
 ////////////////////////////////////////////////////////////// */
 #include "load-process.h"
-#define MAX_PROCESS_SIZE 20
+#define MAX_PROCESS_NAME_SIZE 100
 
 struct p_load {
     double	to;
@@ -40,7 +40,7 @@ void load_file (void *filename, int (*f) (void *)) {
 	max_size = 10;
 
 	lista = malloc (sizeof(Load) * max_size);
-	tmp_name = malloc (MAX_PROCESS_SIZE * sizeof(char));
+	tmp_name = malloc (MAX_PROCESS_NAME_SIZE * sizeof(char));
 
 	while (1) {
 		if (fscanf(entrada, "%lf", &tmp_to) == EOF) break;
@@ -60,7 +60,7 @@ void load_file (void *filename, int (*f) (void *)) {
 		novo->deadline = tmp_deadline;
 		novo->name = tmp_name;
 		novo->line = size-1;
-		tmp_name = malloc (MAX_PROCESS_SIZE * sizeof(char));
+		tmp_name = malloc (MAX_PROCESS_NAME_SIZE * sizeof(char));
 		lista[size-1] = novo;
 	}
 	free (tmp_name);
