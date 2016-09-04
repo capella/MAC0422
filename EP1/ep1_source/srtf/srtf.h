@@ -19,7 +19,7 @@
 void srtf_exec(char *name, int line, double remaining, int (*func) (void *), void *arg);
 
 /* Inicia o escalonador. precisa ter um processo na fila antes de iniciar */
-void srtf_init();
+void srtf_init(char *log_file);
 
 /* chamado em tempos em tesmpos pelo processo */
 int srtf_run();

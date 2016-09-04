@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]) {
     load_file((void *)argv[2], nada);
     p_exec("load_process", -1, 0, load, (void *)p_exec);
 
-    p_init();
+    p_init(argv[3]);
 
     return 0;
 }

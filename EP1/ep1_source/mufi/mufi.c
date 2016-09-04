@@ -15,6 +15,7 @@ struct process_mufi {
     void            * arg;
     int             priority;
     int             started; /* marca se já foi iniciado */
+    double          init;
     struct process_mufi     * next;
 };
 typedef struct process_mufi * ProcessMUFI;
@@ -23,9 +24,11 @@ static ProcessMUFI head;
 static int init = 0;
 static int running = 0;
 static pthread_mutex_t head_lock;
+static pthread_mutex_t file_lock;
 static pthread_t *threads_ids;
 static long threads;
 static double *end_time;
+static FILE *log;
 
 void mufi_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
     ProcessMUFI tmp, novo;
@@ -46,6 +49,8 @@ void mufi_exec(char *name, int line, double remaining, int (*func) (void *), voi
     novo->next = NULL;
     novo->priority = 1;
     novo->started = 0;
+    novo->init = time2();
+
     if (head == NULL) head = novo;
     else tmp->next = novo;
     if (init) pthread_mutex_unlock(&head_lock);
@@ -56,6 +61,7 @@ static void * escalona (void * n) {
     int *number;
     int flag;
     int return_value;
+    double tf;
 
     number = (int *)n;
     while (1) {
@@ -88,6 +94,12 @@ static void * escalona (void * n) {
                 if (head == NULL) head = atual;
                 else tmp->next = atual;
             } else {
+                if (atual->line >= 0) {
+                    tf = time2();
+                    pthread_mutex_lock(&file_lock);
+                    fprintf(log, "%s %.5f %.5f\n", atual->name, tf, tf-atual->init);
+                    pthread_mutex_unlock(&file_lock);
+                }
                 printf("%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
             }
             running--;
@@ -110,15 +122,18 @@ static void * escalona (void * n) {
 }
 
 
-void mufi_init() {
+void mufi_init(char *log_file) {
     int i;
     int *cpu_n;
     threads = sysconf(_SC_NPROCESSORS_ONLN);
+    log = fopen(log_file, "w");
 
     threads_ids = malloc(sizeof(pthread_t) * threads);
     cpu_n = malloc(sizeof(int) * threads);
     end_time = malloc(sizeof(double) * threads);
-    if (pthread_mutex_init(&head_lock, NULL) != 0) {
+
+    if (pthread_mutex_init(&head_lock, NULL) != 0 &&
+        pthread_mutex_init(&file_lock, NULL) != 0) {
         printf("Erro ao criar mutex!\n");
     } else {
         init = 1;
@@ -130,7 +145,9 @@ void mufi_init() {
             pthread_join(threads_ids[i], NULL);
         }
         pthread_mutex_destroy(&head_lock);
+        pthread_mutex_destroy(&file_lock);
     }
+    fclose(log);
 }
 
 /* chamado em tempos em tesmpos pelo processo */

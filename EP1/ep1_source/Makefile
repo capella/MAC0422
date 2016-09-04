@@ -27,3 +27,10 @@ clean:
 	$(RM) ep1
 	$(RM) *.o
 	find . -name "*.gch" -type f -delete
+
+# TESTES
+srtf:
+	# gdb --args ./ep1 2 processos.txt out.txt
+	./ep1 2 processos.txt out.txt
+	cat out.txt
+	$(RM) out.txt

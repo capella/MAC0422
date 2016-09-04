@@ -15,6 +15,7 @@ struct process_strf {
     float           remaining;
     float           original;
     void            * arg;
+    double          init;  
     struct process_strf     * next;
 };
 typedef struct process_strf * ProcessSTRF;
@@ -23,21 +24,22 @@ static ProcessSTRF head;
 static int init = 0;
 static int running = 0;
 static pthread_mutex_t head_lock;
+static pthread_mutex_t file_lock;
 static int *notify;
 static pthread_t *threads_ids;
 static long threads;
 
 static int maior_em_exec;
 static double maior_em_exec_end;
-/*static n = 1;*/
+
+static FILE *log;
 
 void srtf_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
     ProcessSTRF p, q, novo;
 
     if (init) pthread_mutex_lock(&head_lock);
 
-    /* if (line >= 0 || 1) */
-        printf("%.3f\t       NEW '%s' (%d)\n",  time2(), name, line);
+    printf("%.3f\t       NEW '%s' (%d)\n",  time2(), name, line);
 
     novo = malloc(sizeof(struct process_strf));
     novo->name = name;
@@ -47,6 +49,7 @@ void srtf_exec(char *name, int line, double remaining, int (*func) (void *), voi
     novo->original = remaining;
     novo->arg = arg;
     novo->next = NULL;
+    novo->init = time2();
 
     if (head == NULL || head->remaining > remaining) {
         novo->next = head;
@@ -78,6 +81,7 @@ static void * escalona (void * n) {
     int flag;
     double start;
     int return_value;
+    double tf;
 
     number = (int *)n;
     while (1) {
@@ -121,6 +125,12 @@ static void * escalona (void * n) {
                    p->next = atual;
                 } else  head = atual;
             } else {
+                if (atual->line >= 0) {
+                    tf = time2();
+                    pthread_mutex_lock(&file_lock);
+                    fprintf(log, "%s %.5f %.5f\n", atual->name, tf, tf - atual->init);
+                    pthread_mutex_unlock(&file_lock);
+                }
                 printf("%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
             }
             running--;
@@ -144,15 +154,17 @@ static void * escalona (void * n) {
     }
 }
 
-void srtf_init() {
+void srtf_init(char *log_file) {
     int i;
     int *cpu_n;
     threads = sysconf(_SC_NPROCESSORS_ONLN);
+    log = fopen(log_file, "w");
 
     threads_ids = malloc(sizeof(pthread_t) * threads);
     cpu_n = malloc(sizeof(int) * threads);
     notify = malloc(sizeof(int) * threads);
-    if (pthread_mutex_init(&head_lock, NULL) != 0) {
+    if (pthread_mutex_init(&head_lock, NULL) != 0 &&
+        pthread_mutex_init(&file_lock, NULL) != 0) {
         printf("Erro ao criar mutex!\n");
     } else {
         init = 1;
@@ -165,7 +177,9 @@ void srtf_init() {
             pthread_join(threads_ids[i], NULL);
         }
         pthread_mutex_destroy(&head_lock);
+        pthread_mutex_destroy(&file_lock);
     }
+    fclose(log);
 }
 
 /* chamado em tempos em tempos pelo processo */

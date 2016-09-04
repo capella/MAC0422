@@ -21,7 +21,7 @@
 void mufi_exec(char *name, int line, double remaining, int (*func) (void *), void *arg);
 
 /* Inicia o escalonador. precisa ter um processo na fila antes de iniciar */
-void mufi_init();
+void mufi_init(char *log_file);
 
 /* chamado em tempos em tesmpos pelo processo */
 int mufi_run();
