@@ -121,8 +121,7 @@ static void * escalona (void * n) {
                     fprintf(stderr, "%.3f\t %3d > OFF\n", time2(), *number);
                 return NULL;
             }
-            /* usleep(500000); */
-            /* sleep(1); */
+            /* Tempo que dorme se nao ha nenhum processo a ser executado */
             sleep2 (0.05);
         }
     }
