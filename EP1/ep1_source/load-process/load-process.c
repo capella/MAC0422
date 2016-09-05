@@ -76,8 +76,8 @@ int load (void * exec) {
 	int i = 0;
 	double time;
 	int numero_executados = 0;
-	void (*p_exec)(char *, int, double, int (*)(void *), void *);
-	p_exec = (void (*)(char *, int, double, int (*)(void *),void *))exec;
+	void (*p_exec)(char *, int, double, int (*)(void *), void(*)());
+	p_exec = (void (*)(char *, int, double, int (*)(void *),void(*)()))exec;
 	time = time2();
 
 	for (i = 0; i < size; ++i) {
@@ -86,7 +86,7 @@ int load (void * exec) {
 			n = malloc(sizeof(double));
 			*n = lista[i]->dt;
 
-			p_exec(lista[i]->name, lista[i]->line, *n, func, (void *)n);
+			p_exec(lista[i]->name, lista[i]->line, *n, func, (void(*)())n);
 			remaning--;
 
 			free (lista[i]);
@@ -99,7 +99,7 @@ int load (void * exec) {
 		sleep2(WAIT_TIME);
 	}
 	if (remaning > 0) {
-		p_exec("load_process", -1,  WAIT_TIME, load, (void (*)(char *, int, double, int (*)(void *), void *)p_exec);
+		p_exec("load_process", -1,  WAIT_TIME, load, (void (*)())p_exec);
 	}
 	return 0;
 }
