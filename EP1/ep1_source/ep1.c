@@ -18,7 +18,7 @@ int main(int argc, char const *argv[]) {
 
     sscanf (argv[1],"%d",&tipo);
     if (argc == 5) {
-        output_info = argv[5][0];
+        output_info = argv[4][0];
     }
 
     switch(tipo) {

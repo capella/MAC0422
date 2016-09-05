@@ -38,13 +38,14 @@ static FILE *log;
 static int context_changes;
 
 static int output_info;
+static int output_line;
 
 void srtf_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
     ProcessSTRF p, q, novo;
 
     if (init) pthread_mutex_lock(&head_lock);
 
-    fprintf(stderr, "%.3f\t       NEW '%s' (%d)\n",  time2(), name, line);
+    fprintf(stderr, "%.3f\t       NEW '%s'\n",  time2(), name);
 
     novo = malloc(sizeof(struct process_strf));
     novo->name = name;
@@ -104,9 +105,9 @@ static void * escalona (void * n) {
 
             if (atual->line >= 0 || 1) {
                 if (atual->remaining == atual->original) {
-                    fprintf(stderr, "%.3f\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                    fprintf(stderr, "%.3f\t %3d > START '%s'\n", time2(), *number, atual->name);
                 } else {
-                    fprintf(stderr, "%.3f\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                    fprintf(stderr, "%.3f\t %3d > IN '%s'\n", time2(), *number, atual->name);
                 }
             }
 
@@ -117,7 +118,7 @@ static void * escalona (void * n) {
             atual->remaining -= time2()-start;
             /* adiciona processo novamente na fila */
             if (return_value == 1) {
-                fprintf(stderr, "%.3f\t %3d > OUT '%s' (%d) F: %f\n", time2(), *number, atual->name, atual->line,atual->remaining);
+                fprintf(stderr, "%.3f\t %3d > OUT '%s' F: %f\n", time2(), *number, atual->name,atual->remaining);
                 atual->next = NULL;
                 if (head != NULL) {
                     p = head;
@@ -139,7 +140,7 @@ static void * escalona (void * n) {
                     fprintf(log, "%s %.5f %.5f\n", atual->name, tf, tf - atual->init);
                     pthread_mutex_unlock(&file_lock);
                 }
-                fprintf(stderr, "%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
             }
             running--;
             pthread_mutex_unlock(&head_lock);
@@ -167,6 +168,7 @@ void srtf_init(char *log_file, int output) {
     threads = sysconf(_SC_NPROCESSORS_ONLN);
     log = fopen(log_file, "w");
     output_info = output;
+    output_line = 0;
 
     threads_ids = malloc(sizeof(pthread_t) * threads);
     cpu_n = malloc(sizeof(int) * threads);

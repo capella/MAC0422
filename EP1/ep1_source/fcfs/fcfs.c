@@ -7,8 +7,8 @@
 // 
 ////////////////////////////////////////////////////////////// */
 #include "fcfs.h"
-#define ALL 63
-#define DEF 64
+#define ALL 99
+#define DEF 100
 
 struct process_fcgs {
     char            * name;
@@ -28,6 +28,7 @@ static pthread_mutex_t file_lock;
 static FILE *log;
 
 static int output_info;
+static int output_line;
 
 void fcfs_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
     ProcessFCFS tmp, novo;
@@ -36,8 +37,11 @@ void fcfs_exec(char *name, int line, double remaining, int (*func) (void *), voi
     if (init) pthread_mutex_lock(&head_lock);
     tmp = head;
 
-    if (line >= 0) 
-        fprintf(stderr, "%.3f\t       IN '%s' (%d)\n",  time2(), name, line);
+    if (line >= 0 && output_info == DEF) {
+        fprintf(stderr, "   NEW '%s' (%d)\n", name, line);
+    } else if (output_info == ALL) {
+        fprintf(stderr, "%.3f\t       NEW '%s'\n",  time2(), name);
+    }
 
     while (tmp != NULL && tmp->next != NULL) tmp = tmp->next;
 
@@ -70,7 +74,11 @@ static void * escalona (void * n) {
             running++;
             pthread_mutex_unlock(&head_lock);
 
-            fprintf(stderr, "%.3f\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+            if (atual->line >= 0 && output_info == DEF) {
+                fprintf(stderr, "%d) IN  '%s' (%d)\n", *number, atual->name, atual->line);
+            } else if (output_info == ALL) {
+                fprintf(stderr, "%.3f\t %3d > START '%s'\n", time2(), *number, atual->name);
+            }
 
             atual->func(atual->arg);
 
@@ -82,18 +90,25 @@ static void * escalona (void * n) {
                 tf = time2();
                 pthread_mutex_lock(&file_lock);
                 fprintf(log, "%s %.5f %.5f\n", atual->name, tf, tf-atual->init);
+                output_line++;
                 pthread_mutex_unlock(&file_lock);
             }
-            fprintf(stderr, "%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+
+            if (atual->line >= 0 && output_info == DEF) {
+                fprintf(stderr, "%d) OUT '%s' (%d)\n", *number, atual->name, atual->line);
+            } else if (output_info == ALL) {
+                fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
+            }
 
 
             /*free (atual->name);
             free (atual->arg);
             free (atual);*/
         } else {
-            flag = running == 0 && head == NULL;
+            flag = (running == 0 && head == NULL);
             pthread_mutex_unlock(&head_lock);
             if (flag) {
+                if (output_info == ALL)
                     fprintf(stderr, "%.3f\t %3d > OFF\n", time2(), *number);
                 return NULL;
             }
@@ -111,6 +126,7 @@ void fcfs_init(char *log_file, int output) {
     threads = sysconf(_SC_NPROCESSORS_ONLN);
     log = fopen(log_file, "w");
     output_info = output;
+    output_line = 0;
 
     threads_ids = malloc(sizeof(pthread_t) * threads);
     cpu_n = malloc(sizeof(int) * threads);

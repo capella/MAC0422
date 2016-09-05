@@ -99,7 +99,7 @@ int load (void * exec) {
 		sleep2(WAIT_TIME);
 	}
 	if (remaning > 0) {
-		p_exec("load_process", -1,  0, load, (void *)p_exec);
+		p_exec("load_process", -1,  WAIT_TIME, load, (void *)p_exec);
 	}
 	return 0;
 }

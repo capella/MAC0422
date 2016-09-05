@@ -35,6 +35,7 @@ static FILE *log;
 static int context_changes;
 
 static int output_info;
+static int output_line;
 
 void mufi_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
     ProcessMUFI tmp, novo;
@@ -42,8 +43,11 @@ void mufi_exec(char *name, int line, double remaining, int (*func) (void *), voi
     if (init) pthread_mutex_lock(&head_lock);
     tmp = head;
 
-    if (line >= 0) 
-        fprintf(stderr, "%.3f\t       IN '%s' (%d)\n",  time2(), name, line);
+    if (line >= 0 && output_info == DEF) {
+        fprintf(stderr, "   NEW '%s' (%d)\n", name, line);
+    } else if (output_info == ALL) {
+        fprintf(stderr, "%.3f\t       NEW '%s'\n",  time2(), name);
+    }
 
     while (tmp != NULL && tmp->next != NULL) tmp = tmp->next;
 
@@ -80,19 +84,23 @@ static void * escalona (void * n) {
             end_time[*number] = time2() + atual->priority * QUANTON;
             pthread_mutex_unlock(&head_lock);
 
-            if (atual->started == 0) {
-                atual->started = 1;
-                fprintf(stderr, "%.3f\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
-            } else {
-                fprintf(stderr, "%.3f\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
-            }
+            atual->started = 1;
 
+            if (atual->line >= 0 && output_info == DEF) {
+                fprintf(stderr, "%d) IN  '%s' (%d)\n", *number, atual->name, atual->line);
+            } else if (output_info == ALL) {
+                if (atual->started == 0) {
+                    fprintf(stderr, "%.3f\t %3d > START '%s'\n", time2(), *number, atual->name);
+                } else {
+                    fprintf(stderr, "%.3f\t %3d > IN '%s'\n", time2(), *number, atual->name);
+                }
+            }
 
             return_value = atual->func(atual->arg);
 
             pthread_mutex_lock(&head_lock);
             if (return_value == 1) {
-                fprintf(stderr, "%.3f\t %3d > OUT '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                fprintf(stderr, "%.3f\t %3d > OUT '%s'\n", time2(), *number, atual->name);
                 tmp = head;
                 atual->next = NULL;
                 atual->priority += 1;
@@ -107,7 +115,7 @@ static void * escalona (void * n) {
                     fprintf(log, "%s %.5f %.5f\n", atual->name, tf, tf-atual->init);
                     pthread_mutex_unlock(&file_lock);
                 }
-                fprintf(stderr, "%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
             }
             running--;
             pthread_mutex_unlock(&head_lock);
@@ -134,6 +142,7 @@ void mufi_init(char *log_file, int output) {
     threads = sysconf(_SC_NPROCESSORS_ONLN);
     log = fopen(log_file, "w");
     output_info = output;
+    output_line = 0;
 
     threads_ids = malloc(sizeof(pthread_t) * threads);
     cpu_n = malloc(sizeof(int) * threads);
