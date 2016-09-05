@@ -33,4 +33,4 @@ srtf:
 	# gdb --args ./ep1 2 processos.txt out.txt
 	./ep1 2 processos.txt out.txt
 	cat out.txt
-	$(RM) out.txt
+	$(RM) out.txt ep1
