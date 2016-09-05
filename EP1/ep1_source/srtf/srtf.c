@@ -167,6 +167,7 @@ void srtf_init(char *log_file, int output) {
     int *cpu_n;
     threads = sysconf(_SC_NPROCESSORS_ONLN);
     log = fopen(log_file, "w");
+    output_info = output;
 
     threads_ids = malloc(sizeof(pthread_t) * threads);
     cpu_n = malloc(sizeof(int) * threads);
