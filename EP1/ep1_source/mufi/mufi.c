@@ -120,7 +120,11 @@ static void * escalona (void * n) {
             pthread_mutex_unlock(&head_lock);
 
             if (atual->line >= 0 && output_info == DEF) {
-                fprintf(stderr, "%d) OUT '%s' (%d)\n", *number, atual->name, atual->line);
+                if (return_value == 1) {
+                    fprintf(stderr, "%d) OUT '%s'\n", *number, atual->name);
+                } else {
+                    fprintf(stderr, "%d) END '%s' (%d)\n", *number, atual->name, output_line);
+                }
             } else if (output_info == ALL) {
                 if (return_value == 1) {
                     fprintf(stderr, "%.3f\t %3d > OUT '%s'\n", time2(), *number, atual->name);

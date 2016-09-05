@@ -15,8 +15,8 @@ Executando com `c` como quinto argumento você verá a saída completa do progra
 
 NEW "nome do processo" ("linha de trace") -> chegada de um processo no sistema, informando a linha do trace daquele processo
 "numero da cpu") IN "nome do processo" -> uso da CPU por um processo, informando qual o processo que começou a usar a CPU e qual CPU ele esta usando ´
-"numero da cpu") OU "nome do processo" -> liberação da CPU por um processo, informando qual o processo que deixou de usar a CPU e qual CPU ele esta liberando ´
-OUT "nome do processo" ("linha arquivo de saída") -> finalização da execucção do processo, informando a linha que será escrita no arquivo de sa ´ ´ıda
+"numero da cpu") OUT "nome do processo" -> liberação da CPU por um processo, informando qual o processo que deixou de usar a CPU e qual CPU ele esta liberando ´
+END "nome do processo" ("linha arquivo de saída") -> finalização da execucção do processo, informando a linha que será escrita no arquivo de sa ´ ´ıda
 MC "número de mudanças de contexto" -> quantidade de mudanc¸as de contexto
 
 Note que não será mostrado o processo 'load_process'.
