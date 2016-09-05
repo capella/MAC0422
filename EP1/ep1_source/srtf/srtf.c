@@ -7,8 +7,8 @@
 // 
 ////////////////////////////////////////////////////////////// */
 #include "srtf.h"
-#define ALL 63
-#define DEF 64
+#define ALL 99
+#define DEF 100
 
 struct process_strf {
     char            * name;
@@ -108,11 +108,7 @@ static void * escalona (void * n) {
             pthread_mutex_unlock(&head_lock);
 
             if (atual->line >= 0 && output_info == DEF) {
-                if (return_value == 1) {
-                    fprintf(stderr, "%d) OUT '%s'\n", *number, atual->name);
-                } else {
-                    fprintf(stderr, "%d) END '%s' (%d)\n", *number, atual->name, output_line);
-                }
+                fprintf(stderr, "%d) IN  '%s' (%d)\n", *number, atual->name, atual->line);
             } else if (output_info == ALL) {
                 if (atual->remaining == atual->original) {
                     fprintf(stderr, "%.3f\t %3d > START '%s'\n", time2(), *number, atual->name);
@@ -155,7 +151,11 @@ static void * escalona (void * n) {
             pthread_mutex_unlock(&head_lock);
 
             if (atual->line >= 0 && output_info == DEF) {
-                fprintf(stderr, "%d) OUT '%s' (%d)\n", *number, atual->name, atual->line);
+                if (return_value == 1) {
+                    fprintf(stderr, "%d) OUT '%s'\n", *number, atual->name);
+                } else {
+                    fprintf(stderr, "%d) END '%s' (%d)\n", *number, atual->name, output_line-1);
+                }
             } else if (output_info == ALL) {
                 if (return_value == 1) {
                     fprintf(stderr, "%.3f\t %3d > OUT '%s'\n", time2(), *number, atual->name);
@@ -210,6 +210,8 @@ void srtf_init(char *log_file, int output) {
         pthread_mutex_destroy(&head_lock);
         pthread_mutex_destroy(&file_lock);
     }
+    if (output_info == DEF)
+        fprintf(stderr, "   MC %d\n", context_changes);
     fprintf(log, "%d\n", context_changes);
     fclose(log);
 }

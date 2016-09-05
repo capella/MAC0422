@@ -95,7 +95,7 @@ static void * escalona (void * n) {
             }
 
             if (atual->line >= 0 && output_info == DEF) {
-                fprintf(stderr, "%d) END '%s' (%d)\n", *number, atual->name, output_line);
+                fprintf(stderr, "%d) END '%s' (%d)\n", *number, atual->name, output_line-1);
             } else if (output_info == ALL) {
                 fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
             }
@@ -145,6 +145,8 @@ void fcfs_init(char *log_file, int output) {
         pthread_mutex_destroy(&head_lock);
         pthread_mutex_destroy(&file_lock);
     }
+    if (output_info == DEF)
+        fprintf(stderr, "   MC 0\n");
     fprintf(log, "0\n");
     fclose(log);
 }

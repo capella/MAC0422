@@ -7,8 +7,8 @@
 // 
 ////////////////////////////////////////////////////////////// */
 #include "mufi.h"
-#define ALL 63
-#define DEF 64
+#define ALL 99
+#define DEF 100
 
 struct process_mufi {
     char            * name;
@@ -123,7 +123,7 @@ static void * escalona (void * n) {
                 if (return_value == 1) {
                     fprintf(stderr, "%d) OUT '%s'\n", *number, atual->name);
                 } else {
-                    fprintf(stderr, "%d) END '%s' (%d)\n", *number, atual->name, output_line);
+                    fprintf(stderr, "%d) END '%s' (%d)\n", *number, atual->name, output_line-1);
                 }
             } else if (output_info == ALL) {
                 if (return_value == 1) {
@@ -178,6 +178,8 @@ void mufi_init(char *log_file, int output) {
         pthread_mutex_destroy(&head_lock);
         pthread_mutex_destroy(&file_lock);
     }
+    if (output_info == DEF)
+        fprintf(stderr, "   MC %d\n", context_changes);
     fprintf(log, "%d\n", context_changes);
     fclose(log);
 }
