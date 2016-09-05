@@ -11,3 +11,5 @@ ep1sh: $(OBJ)
 
 clean:
 	rm ep1sh.o ep1sh
+	$(RM) *.o
+	find . -name "*.gch" -type f -delete
