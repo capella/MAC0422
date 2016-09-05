@@ -100,7 +100,6 @@ static void * escalona (void * n) {
 
             pthread_mutex_lock(&head_lock);
             if (return_value == 1) {
-                fprintf(stderr, "%.3f\t %3d > OUT '%s'\n", time2(), *number, atual->name);
                 tmp = head;
                 atual->next = NULL;
                 atual->priority += 1;
@@ -113,12 +112,22 @@ static void * escalona (void * n) {
                     tf = time2();
                     pthread_mutex_lock(&file_lock);
                     fprintf(log, "%s %.5f %.5f\n", atual->name, tf, tf-atual->init);
+                    output_line++;
                     pthread_mutex_unlock(&file_lock);
                 }
-                fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
             }
             running--;
             pthread_mutex_unlock(&head_lock);
+
+            if (atual->line >= 0 && output_info == DEF) {
+                fprintf(stderr, "%d) OUT '%s' (%d)\n", *number, atual->name, atual->line);
+            } else if (output_info == ALL) {
+                if (return_value == 1) {
+                    fprintf(stderr, "%.3f\t %3d > OUT '%s'\n", time2(), *number, atual->name);
+                } else {
+                    fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
+                }
+            }
             /*free (atual->name);
             free (atual->arg);
             free (atual);*/
@@ -126,6 +135,7 @@ static void * escalona (void * n) {
             flag = running == 0 && head == NULL;
             pthread_mutex_unlock(&head_lock);
             if (flag) {
+                if (output_info == ALL)
                     fprintf(stderr, "%.3f\t %3d > OFF\n", time2(), *number);
                 return NULL;
             }

@@ -45,7 +45,11 @@ void srtf_exec(char *name, int line, double remaining, int (*func) (void *), voi
 
     if (init) pthread_mutex_lock(&head_lock);
 
-    fprintf(stderr, "%.3f\t       NEW '%s'\n",  time2(), name);
+    if (line >= 0 && output_info == DEF) {
+        fprintf(stderr, "   NEW '%s' (%d)\n", name, line);
+    } else if (output_info == ALL) {
+        fprintf(stderr, "%.3f\t       NEW '%s'\n",  time2(), name);
+    }
 
     novo = malloc(sizeof(struct process_strf));
     novo->name = name;
@@ -103,7 +107,9 @@ static void * escalona (void * n) {
             }
             pthread_mutex_unlock(&head_lock);
 
-            if (atual->line >= 0 || 1) {
+            if (atual->line >= 0 && output_info == DEF) {
+                fprintf(stderr, "%d) IN  '%s' (%d)\n", *number, atual->name, atual->line);
+            } else if (output_info == ALL) {
                 if (atual->remaining == atual->original) {
                     fprintf(stderr, "%.3f\t %3d > START '%s'\n", time2(), *number, atual->name);
                 } else {
@@ -118,7 +124,6 @@ static void * escalona (void * n) {
             atual->remaining -= time2()-start;
             /* adiciona processo novamente na fila */
             if (return_value == 1) {
-                fprintf(stderr, "%.3f\t %3d > OUT '%s' F: %f\n", time2(), *number, atual->name,atual->remaining);
                 atual->next = NULL;
                 if (head != NULL) {
                     p = head;
@@ -138,13 +143,22 @@ static void * escalona (void * n) {
                     tf = time2();
                     pthread_mutex_lock(&file_lock);
                     fprintf(log, "%s %.5f %.5f\n", atual->name, tf, tf - atual->init);
+                    output_line++;
                     pthread_mutex_unlock(&file_lock);
                 }
-                fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
             }
             running--;
             pthread_mutex_unlock(&head_lock);
 
+            if (atual->line >= 0 && output_info == DEF) {
+                fprintf(stderr, "%d) OUT '%s' (%d)\n", *number, atual->name, atual->line);
+            } else if (output_info == ALL) {
+                if (return_value == 1) {
+                    fprintf(stderr, "%.3f\t %3d > OUT '%s'\n", time2(), *number, atual->name);
+                } else {
+                    fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
+                }
+            }
 
             /*free (atual->name);
             free (atual->arg);
@@ -153,6 +167,7 @@ static void * escalona (void * n) {
             flag = running == 0 && head == NULL;
             pthread_mutex_unlock(&head_lock);
             if (flag) {
+                if (output_info == ALL)
                     fprintf(stderr, "%.3f\t %3d > OFF\n", time2(), *number);
                 return NULL;
             }
