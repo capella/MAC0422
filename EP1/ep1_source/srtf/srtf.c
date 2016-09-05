@@ -7,6 +7,8 @@
 // 
 ////////////////////////////////////////////////////////////// */
 #include "srtf.h"
+#define ALL 63
+#define DEF 64
 
 struct process_strf {
     char            * name;
@@ -33,13 +35,16 @@ static int maior_em_exec;
 static double maior_em_exec_end;
 
 static FILE *log;
+static int context_changes;
+
+static int output_info;
 
 void srtf_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
     ProcessSTRF p, q, novo;
 
     if (init) pthread_mutex_lock(&head_lock);
 
-    printf("%.3f\t       NEW '%s' (%d)\n",  time2(), name, line);
+    fprintf(stderr, "%.3f\t       NEW '%s' (%d)\n",  time2(), name, line);
 
     novo = malloc(sizeof(struct process_strf));
     novo->name = name;
@@ -99,9 +104,9 @@ static void * escalona (void * n) {
 
             if (atual->line >= 0 || 1) {
                 if (atual->remaining == atual->original) {
-                    printf("%.3f\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                    fprintf(stderr, "%.3f\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
                 } else {
-                    printf("%.3f\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                    fprintf(stderr, "%.3f\t %3d > IN '%s' (%d)\n", time2(), *number, atual->name, atual->line);
                 }
             }
 
@@ -112,7 +117,7 @@ static void * escalona (void * n) {
             atual->remaining -= time2()-start;
             /* adiciona processo novamente na fila */
             if (return_value == 1) {
-                printf("%.3f\t %3d > OUT '%s' (%d) F: %f\n", time2(), *number, atual->name, atual->line,atual->remaining);
+                fprintf(stderr, "%.3f\t %3d > OUT '%s' (%d) F: %f\n", time2(), *number, atual->name, atual->line,atual->remaining);
                 atual->next = NULL;
                 if (head != NULL) {
                     p = head;
@@ -123,7 +128,10 @@ static void * escalona (void * n) {
                     }
                    atual->next = q;
                    p->next = atual;
-                } else  head = atual;
+                } else  { 
+                    head = atual;
+                }
+                context_changes++;
             } else {
                 if (atual->line >= 0) {
                     tf = time2();
@@ -131,7 +139,7 @@ static void * escalona (void * n) {
                     fprintf(log, "%s %.5f %.5f\n", atual->name, tf, tf - atual->init);
                     pthread_mutex_unlock(&file_lock);
                 }
-                printf("%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+                fprintf(stderr, "%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
             }
             running--;
             pthread_mutex_unlock(&head_lock);
@@ -144,7 +152,7 @@ static void * escalona (void * n) {
             flag = running == 0 && head == NULL;
             pthread_mutex_unlock(&head_lock);
             if (flag) {
-                    printf("%.3f\t %3d > OFF\n", time2(), *number);
+                    fprintf(stderr, "%.3f\t %3d > OFF\n", time2(), *number);
                 return NULL;
             }
             /* usleep(500000); */
@@ -154,7 +162,7 @@ static void * escalona (void * n) {
     }
 }
 
-void srtf_init(char *log_file) {
+void srtf_init(char *log_file, int output) {
     int i;
     int *cpu_n;
     threads = sysconf(_SC_NPROCESSORS_ONLN);
@@ -163,9 +171,11 @@ void srtf_init(char *log_file) {
     threads_ids = malloc(sizeof(pthread_t) * threads);
     cpu_n = malloc(sizeof(int) * threads);
     notify = malloc(sizeof(int) * threads);
+    context_changes = 0;
+
     if (pthread_mutex_init(&head_lock, NULL) != 0 &&
         pthread_mutex_init(&file_lock, NULL) != 0) {
-        printf("Erro ao criar mutex!\n");
+        fprintf(stderr, "Erro ao criar mutex!\n");
     } else {
         init = 1;
         for (i = 0; i < threads; ++i) {
@@ -179,6 +189,7 @@ void srtf_init(char *log_file) {
         pthread_mutex_destroy(&head_lock);
         pthread_mutex_destroy(&file_lock);
     }
+    fprintf(log, "%d\n", context_changes);
     fclose(log);
 }
 

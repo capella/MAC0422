@@ -33,7 +33,6 @@ void load_file (void *filename, int (*f) (void *)) {
 	func = f;
 
 	name = (char*)filename;
-	printf("Carregando arquivo %s\n", name);
 
 	entrada = fopen (name, "r");
 	size = 0;
@@ -66,7 +65,7 @@ void load_file (void *filename, int (*f) (void *)) {
 	free (tmp_name);
 	remaning = size;
 
-	/* printf("Arquivo carregado!\n"); */
+	/* fprintf(stderr, "Arquivo carregado!\n"); */
 }
 
 /* função que chama, e funcao a ser chamada 
@@ -83,7 +82,7 @@ int load (void * exec) {
 
 	for (i = 0; i < size; ++i) {
 		if (lista[i] != NULL && lista[i]->to <= time) {
-			/* printf("%d %s\n", i,lista[i]->name); */
+			/* fprintf(stderr, "%d %s\n", i,lista[i]->name); */
 			n = malloc(sizeof(double));
 			*n = lista[i]->dt;
 

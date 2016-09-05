@@ -7,6 +7,8 @@
 // 
 ////////////////////////////////////////////////////////////// */
 #include "fcfs.h"
+#define ALL 63
+#define DEF 64
 
 struct process_fcgs {
     char            * name;
@@ -25,6 +27,8 @@ static pthread_mutex_t head_lock;
 static pthread_mutex_t file_lock;
 static FILE *log;
 
+static int output_info;
+
 void fcfs_exec(char *name, int line, double remaining, int (*func) (void *), void *arg) {
     ProcessFCFS tmp, novo;
 
@@ -33,7 +37,7 @@ void fcfs_exec(char *name, int line, double remaining, int (*func) (void *), voi
     tmp = head;
 
     if (line >= 0) 
-        printf("%.3f\t       IN '%s' (%d)\n",  time2(), name, line);
+        fprintf(stderr, "%.3f\t       IN '%s' (%d)\n",  time2(), name, line);
 
     while (tmp != NULL && tmp->next != NULL) tmp = tmp->next;
 
@@ -66,7 +70,7 @@ static void * escalona (void * n) {
             running++;
             pthread_mutex_unlock(&head_lock);
 
-            printf("%.3f\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+            fprintf(stderr, "%.3f\t %3d > START '%s' (%d)\n", time2(), *number, atual->name, atual->line);
 
             atual->func(atual->arg);
 
@@ -80,7 +84,7 @@ static void * escalona (void * n) {
                 fprintf(log, "%s %.5f %.5f\n", atual->name, tf, tf-atual->init);
                 pthread_mutex_unlock(&file_lock);
             }
-            printf("%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
+            fprintf(stderr, "%.3f\t %3d > END '%s' (%d)\n", time2(), *number, atual->name, atual->line);
 
 
             /*free (atual->name);
@@ -90,7 +94,7 @@ static void * escalona (void * n) {
             flag = running == 0 && head == NULL;
             pthread_mutex_unlock(&head_lock);
             if (flag) {
-                    printf("%.3f\t %3d > OFF\n", time2(), *number);
+                    fprintf(stderr, "%.3f\t %3d > OFF\n", time2(), *number);
                 return NULL;
             }
             /* usleep(500000); */
@@ -100,7 +104,7 @@ static void * escalona (void * n) {
     }
 }
 
-void fcfs_init(char *log_file) {
+void fcfs_init(char *log_file, int output) {
     pthread_t *threads_ids;
     int i, threads;
     int *cpu_n;
@@ -111,7 +115,7 @@ void fcfs_init(char *log_file) {
     cpu_n = malloc(sizeof(int) * threads);
     if (pthread_mutex_init(&head_lock, NULL) != 0 &&
         pthread_mutex_init(&file_lock, NULL) != 0) {
-        printf("Erro ao criar mutex!\n");
+        fprintf(stderr, "Erro ao criar mutex!\n");
     } else {
         init = 1;
         for (i = 0; i < threads; ++i) {
@@ -124,6 +128,7 @@ void fcfs_init(char *log_file) {
         pthread_mutex_destroy(&head_lock);
         pthread_mutex_destroy(&file_lock);
     }
+    fprintf(log, "0\n");
     fclose(log);
 }
 
