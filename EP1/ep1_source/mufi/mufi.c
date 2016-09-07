@@ -84,8 +84,6 @@ static void * escalona (void * n) {
             end_time[*number] = time2() + atual->priority * QUANTON;
             pthread_mutex_unlock(&head_lock);
 
-            atual->started = 1;
-
             if (atual->line >= 0 && output_info == DEF) {
                 fprintf(stderr, "%d) IN  '%s' (%d)\n", *number, atual->name, atual->line);
             } else if (output_info == ALL) {
@@ -95,6 +93,8 @@ static void * escalona (void * n) {
                     fprintf(stderr, "%.3f\t %3d > IN '%s'\n", time2(), *number, atual->name);
                 }
             }
+
+            atual->started = 1;
 
             return_value = atual->func(atual->arg);
 
