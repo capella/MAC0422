@@ -81,11 +81,11 @@ void srtf_exec(char *name, int line, double remaining, int (*func) (void *), voi
             notify[maior_em_exec] = 1;
         }
     }
-    p = head;
+    /*p = head;
     while(p!=NULL) {
         printf("%s (%f)\n", p->name, p->remaining);
         p = p->next;
-    }
+    }*/
 
     if (init) pthread_mutex_unlock(&head_lock);
 }

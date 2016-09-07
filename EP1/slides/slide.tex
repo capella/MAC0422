@@ -5,6 +5,7 @@
 \usepackage{lipsum}
 \usepackage{ragged2e}
 \usepackage{etoolbox}
+\usepackage{graphicx}
 
 
 \title{Simulador de processos}
@@ -43,10 +44,39 @@
 
 
 \begin{frame}{Exemplo}
-	\justifying
-	Para exemplificar, o funcionamento dos escalonadores, vamos executar o 
-	
-	
+	Vamos executar esse exemplo com os 4 algorítimos e pintar cada processo com uma cor.
+	\begin{columns}[T,onlytextwidth]
+		\column{0.5\textwidth}
+		
+		0 1 processo1 20 \newline
+		0 2 processo2 20 \newline
+		0 3 processo3 20 \newline
+		0 4 processo4 20 \newline
+		1 5 processo1 20 \newline
+		1 6 processo2 20 \newline
+		1 7 processo3 20 \newline
+		1 8 processo4 20 \newline
+		
+		\column{0.5\textwidth}
+		
+		\metroset{block=fill}
+		
+		
+		1.5 processo9 1 20 \newline
+		1.5 processo10 2 20 \newline
+		1.5 processo11 3 20 \newline
+		1.5 processo12 4 20 \newline
+		5 13 processo1 20 \newline
+		5 14 processo2 20 \newline
+		5 15 processo3 20 \newline
+		5 16 processo4 20
+		
+		
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Exemplo}
+	\includegraphics[width=\textwidth]{graphs/comparacao}
 \end{frame}
 
 \end{document}
