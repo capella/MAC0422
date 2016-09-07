@@ -1,0 +1,52 @@
+\documentclass{beamer}
+\usetheme{metropolis} % Use metropolis theme
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{lipsum}
+\usepackage{ragged2e}
+\usepackage{etoolbox}
+
+
+\title{Simulador de processos}
+\date{\today}
+\author{Luis e Gabriel}
+\institute{Centre for Modern Beamer Themes}
+\begin{document}
+\maketitle
+
+\section{Considerações Escalonador}
+\begin{frame}{Princípios}
+	\begin{itemize}
+		\item Um processo somente pode ser criado a partir de outro.
+		\item A o escalonador deve ter um processo em sua fila antes de iniciar.
+		\item Se não há nenhum processo a ser executado, desligamos todos as CPUs.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Como Implementamos}
+	Os três tipos de escalonadores devem apresentar as seguintes funções:
+	\begin{itemize}
+		\item \textsc{p\_init}: função chamada para ligar o nosso escalonador. Ela verifica quantas CPUs há no computador do usuário e inicia uma thread para cada uma. Finaliza somente quando não há mais processos a serem executados.
+		\item \textsc{p\_exec}: recebe as características de um novos processo (nome, linha do trace, tempo de execução, ponteiro para função e argumentos da função). Adiciona esse processo ao escalonador.
+		\item \textsc{p\_run}: chamada dentro de um processo, verifica se ele deve continuar sua execução ou parar.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Processo \textsc{load\_process} (-1)}
+	\justifying
+	Antes do nosso escalonador iniciar, adicionamos esse processo a ele. Esse processo tem a função criar os nossos outros processos. Ou seja, ele verifica se já está na hora de adicionar outros processos no escalonador baseado no arquivo de trace. 
+	
+	Quando existe processo pedentes a serem criados, ele espera 0,5s e depois adiciona a sí mesmo no escalonador. 
+\end{frame}
+
+
+\begin{frame}{Exemplo}
+	\justifying
+	Para exemplificar, o funcionamento dos escalonadores, vamos executar o 
+	
+	
+\end{frame}
+
+\end{document}

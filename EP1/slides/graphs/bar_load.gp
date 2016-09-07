@@ -14,7 +14,8 @@ unset ytics
 set cbrange [ -1.0 : * ]
 unset colorbox
 
+set xtics 1
 
-plot "out3c" using (($4+$3)/2):1:(($4-$3)/2):(0.5):2 with boxxy lc pal z fs solid, "out2c" using (($4+$3)/2):($1+5):(($4-$3)/2):(0.5):2 with boxxy lc pal z fs solid, "out1c" using (($4+$3)/2):($1+10):(($4-$3)/2):(0.5):2 with boxxy lc pal z fs solid
+plot "out3c" using (($4+$3)/2):1:(($4-$3)/2):(0.48):2 with boxxy lc pal z fs solid, "out2c" using (($4+$3)/2):($1+5):(($4-$3)/2):(0.48):2 with boxxy lc pal z fs solid, "out1c" using (($4+$3)/2):($1+10):(($4-$3)/2):(0.48):2 with boxxy lc pal z fs solid
 
 

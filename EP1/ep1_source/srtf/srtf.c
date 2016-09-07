@@ -67,7 +67,7 @@ void srtf_exec(char *name, int line, double remaining, int (*func) (void *), voi
     } else  {
         p = head;
         q = head->next;
-        while (q != NULL && q->remaining > remaining) {
+        while (q != NULL && q->remaining < remaining) {
             p = q;
             q = q->next;
         }
@@ -80,6 +80,11 @@ void srtf_exec(char *name, int line, double remaining, int (*func) (void *), voi
         if (running == threads && novo->remaining+time2() < maior_em_exec) {
             notify[maior_em_exec] = 1;
         }
+    }
+    p = head;
+    while(p!=NULL) {
+        printf("%s (%f)\n", p->name, p->remaining);
+        p = p->next;
     }
 
     if (init) pthread_mutex_unlock(&head_lock);
@@ -128,7 +133,7 @@ static void * escalona (void * n) {
                 if (head != NULL) {
                     p = head;
                     q = head->next;
-                    while (q != NULL && q->remaining > atual->remaining) {
+                    while (q != NULL && q->remaining < atual->remaining) {
                         p = q;
                         q = q->next;
                     }
@@ -184,7 +189,8 @@ static void * escalona (void * n) {
 void srtf_init(char *log_file, int output) {
     int i;
     int *cpu_n;
-    threads = sysconf(_SC_NPROCESSORS_ONLN);
+    /*threads = sysconf(_SC_NPROCESSORS_ONLN);*/
+    threads = 4;
     log = fopen(log_file, "w");
     output_info = output;
     output_line = 0;
