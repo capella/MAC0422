@@ -13,7 +13,7 @@
 #include <stdio.h>  /* EOF, printf, getchar */
 #include "../time2/time2.h"
 
-#define WAIT_TIME 0.5 /* segundos */
+#define WAIT_TIME 0.05 /* segundos */
 
 void load_file (void *filename, int (*) (void *));
 
