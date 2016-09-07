@@ -189,8 +189,7 @@ static void * escalona (void * n) {
 void srtf_init(char *log_file, int output) {
     int i;
     int *cpu_n;
-    /*threads = sysconf(_SC_NPROCESSORS_ONLN);*/
-    threads = 4;
+    threads = sysconf(_SC_NPROCESSORS_ONLN);
     log = fopen(log_file, "w");
     output_info = output;
     output_line = 0;
