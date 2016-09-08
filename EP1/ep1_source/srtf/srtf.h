@@ -6,7 +6,7 @@
  *  Descrição: Biblioteca de funções que usam o escalonador SRTN 
  *             (Shortest Remaining Time Next).
  ********************************************************************/  
-
+#ifndef SRTF_H
 #define SRTF_H
 
 #include <stdio.h>
