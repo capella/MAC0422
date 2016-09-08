@@ -10,26 +10,26 @@
 
 \title{Simulador de processos}
 \date{\today}
-\author{Luis e Gabriel}
+\author{Luís e Gabriel}
 \institute{Centre for Modern Beamer Themes}
 \begin{document}
 \maketitle
 
-\section{Considerações Escalonador}
+\section{Considerações sobre o escalonador}
 \begin{frame}{Princípios}
 	\begin{itemize}
-		\item Um processo somente pode ser criado a partir de outro.
-		\item A o escalonador deve ter um processo em sua fila antes de iniciar.
+		\item Um processo só pode ser criado a partir de outro.
+		\item O escalonador deve ter um processo em sua fila antes de iniciar.
 		\item Se não há nenhum processo a ser executado, desligamos todos as CPUs.
 	\end{itemize}
 \end{frame}
 
 
-\begin{frame}{Como Implementamos}
+\begin{frame}{Como implementamos}
 	Os três tipos de escalonadores devem apresentar as seguintes funções:
 	\begin{itemize}
 		\item \textsc{p\_init}: função chamada para ligar o nosso escalonador. Ela verifica quantas CPUs há no computador do usuário e inicia uma thread para cada uma. Finaliza somente quando não há mais processos a serem executados.
-		\item \textsc{p\_exec}: recebe as características de um novos processo (nome, linha do trace, tempo de execução, ponteiro para função e argumentos da função). Adiciona esse processo ao escalonador.
+		\item \textsc{p\_exec}: recebe as características de um novo processo (nome, linha do trace, tempo de execução, ponteiro para função e argumentos da função). Adiciona esse processo ao escalonador.
 		\item \textsc{p\_run}: chamada dentro de um processo, verifica se ele deve continuar sua execução ou parar.
 	\end{itemize}
 \end{frame}
@@ -39,12 +39,12 @@
 	\justifying
 	Antes do nosso escalonador iniciar, adicionamos esse processo a ele. Esse processo tem a função criar os nossos outros processos. Ou seja, ele verifica se já está na hora de adicionar outros processos no escalonador baseado no arquivo de trace. 
 	
-	Quando existe processo pedentes a serem criados, ele espera 0,05s e depois adiciona a sí mesmo no escalonador. 
+	Quando existem processos pedentes a serem criados, ele espera 0,05s e depois adiciona a si mesmo no escalonador. 
 \end{frame}
 
 
 \begin{frame}{Exemplo}
-	Vamos executar esse exemplo com os 4 algorítimos e pintar cada processo com uma cor.
+	Vamos executar esse exemplo com os 4 algoritmos e pintar cada processo com uma cor.
 	\begin{columns}[T,onlytextwidth]
 		\column{0.5\textwidth}
 		
@@ -83,7 +83,7 @@
 
 \section{Testes}
 
-\begin{frame}{Gerando Valores}
+\begin{frame}{Gerando valores}
 	\justifying
 	Escolhemos um número de processos $n$ e escolhemos um valor $x$ entre  0 e 10, uniformemente. Depois escolhemos $y$ entre $x$ e 10. $x$ é o momento em que o processo inicia e $y-x$ é a duração do processo. Considere as unidades em segundos.
 	
@@ -142,42 +142,42 @@
 	\includegraphics[width=\textwidth]{graphs/testes_capella/result/trocas-r8-500}
 \end{frame}
 
-\begin{frame}{Porcentagem de Deadlines Compridos, $n = 10$ e $4$ CPUs}
+\begin{frame}{Porcentagem de Deadlines Cumpridos, $n = 10$ e $4$ CPUs}
 	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r4-10}
 	
 	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
 \end{frame}
 
 
-\begin{frame}{Porcentagem de Deadlines Compridos, $n = 10$ e $8$ CPUs}
+\begin{frame}{Porcentagem de Deadlines Cumpridos, $n = 10$ e $8$ CPUs}
 	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r8-10}
 	
 	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
 \end{frame}
 
 
-\begin{frame}{Porcentagem de Deadlines Compridos, $n = 100$ e $4$ CPUs}
+\begin{frame}{Porcentagem de Deadlines Cumpridos, $n = 100$ e $4$ CPUs}
 	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r4-100}
 	
 	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
 \end{frame}
 
 
-\begin{frame}{Porcentagem de Deadlines Compridos, $n = 100$ e $8$ CPUs}
+\begin{frame}{Porcentagem de Deadlines Cumpridos, $n = 100$ e $8$ CPUs}
 	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r8-100}
 	
 	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
 \end{frame}
 
 
-\begin{frame}{Porcentagem de Deadlines Compridos, $n = 500$ e $4$ CPUs}
+\begin{frame}{Porcentagem de Deadlines Cumpridos, $n = 500$ e $4$ CPUs}
 	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r4-500}
 	
 	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
 \end{frame}
 
 
-\begin{frame}{Porcentagem de Deadlines Compridos, $n = 500$ e $8$ CPUs}
+\begin{frame}{Porcentagem de Deadlines Cumpridos, $n = 500$ e $8$ CPUs}
 	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r8-500}
 	
 	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
