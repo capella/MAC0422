@@ -10,6 +10,8 @@
 #include "mufi.h"
 #define ALL 99
 #define DEF 100
+ 
+#define QUANTUM 0.5
 
 struct process_mufi {
     char            * name;
