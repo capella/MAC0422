@@ -18,8 +18,6 @@
 #include "../time2/time2.h"
 #include "../collector/collector.h"
 
-#define QUANTUM 0.5
-
 /* Adiciona um novo processo a fila de execução */
 void mufi_exec(char *name, int line, double remaining, int (*func) (void *), void *arg);
 
