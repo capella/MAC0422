@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.12)  7 SEP 2016 22:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.12)  7 SEP 2016 22:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1343,7 +1343,7 @@ Overfull \vbox (15.38986pt too high) detected at line 82
 <cloud.png, id=80, 328.22626pt x 291.0875pt>
 File: cloud.png Graphic file (type png)
  <use cloud.png>
-Package pdftex.def Info: cloud.png used on input line 112.
+Package pdftex.def Info: cloud.png used on input line 113.
 (pdftex.def)             Requested size: 131.28816pt x 116.43292pt.
  [10
 
@@ -1353,7 +1353,7 @@ File: graphs/testes_capella/result/trocas-r4-10.png Graphic file (type png)
 
 <use graphs/testes_capella/result/trocas-r4-10.png>
 Package pdftex.def Info: graphs/testes_capella/result/trocas-r4-10.png used on 
-input line 117.
+input line 118.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
  [11
 
@@ -1363,7 +1363,7 @@ File: graphs/testes_capella/result/trocas-r8-10.png Graphic file (type png)
 
 <use graphs/testes_capella/result/trocas-r8-10.png>
 Package pdftex.def Info: graphs/testes_capella/result/trocas-r8-10.png used on 
-input line 122.
+input line 123.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
  [12
 
@@ -1373,7 +1373,7 @@ File: graphs/testes_capella/result/trocas-r4-100.png Graphic file (type png)
 
 <use graphs/testes_capella/result/trocas-r4-100.png>
 Package pdftex.def Info: graphs/testes_capella/result/trocas-r4-100.png used on
- input line 127.
+ input line 128.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
  [13
 
@@ -1383,7 +1383,7 @@ File: graphs/testes_capella/result/trocas-r8-100.png Graphic file (type png)
 
 <use graphs/testes_capella/result/trocas-r8-100.png>
 Package pdftex.def Info: graphs/testes_capella/result/trocas-r8-100.png used on
- input line 132.
+ input line 133.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
  [14
 
@@ -1393,7 +1393,7 @@ File: graphs/testes_capella/result/trocas-r4-500.png Graphic file (type png)
 
 <use graphs/testes_capella/result/trocas-r4-500.png>
 Package pdftex.def Info: graphs/testes_capella/result/trocas-r4-500.png used on
- input line 137.
+ input line 138.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
  [15
 
@@ -1403,7 +1403,7 @@ File: graphs/testes_capella/result/trocas-r8-500.png Graphic file (type png)
 
 <use graphs/testes_capella/result/trocas-r8-500.png>
 Package pdftex.def Info: graphs/testes_capella/result/trocas-r8-500.png used on
- input line 142.
+ input line 143.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
  [16
 
@@ -1413,10 +1413,10 @@ File: graphs/testes_capella/result/deadlines-r4-10.png Graphic file (type png)
 
 <use graphs/testes_capella/result/deadlines-r4-10.png>
 Package pdftex.def Info: graphs/testes_capella/result/deadlines-r4-10.png used 
-on input line 148.
+on input line 149.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
 
-Overfull \vbox (15.38986pt too high) detected at line 148
+Overfull \vbox (15.38986pt too high) detected at line 149
  []
 
 [17
@@ -1427,10 +1427,10 @@ File: graphs/testes_capella/result/deadlines-r8-10.png Graphic file (type png)
 
 <use graphs/testes_capella/result/deadlines-r8-10.png>
 Package pdftex.def Info: graphs/testes_capella/result/deadlines-r8-10.png used 
-on input line 155.
+on input line 156.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
 
-Overfull \vbox (15.38986pt too high) detected at line 155
+Overfull \vbox (15.38986pt too high) detected at line 156
  []
 
 [18
@@ -1441,10 +1441,10 @@ File: graphs/testes_capella/result/deadlines-r4-100.png Graphic file (type png)
 
 <use graphs/testes_capella/result/deadlines-r4-100.png>
 Package pdftex.def Info: graphs/testes_capella/result/deadlines-r4-100.png used
- on input line 162.
+ on input line 163.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
 
-Overfull \vbox (15.38986pt too high) detected at line 162
+Overfull \vbox (15.38986pt too high) detected at line 163
  []
 
 [19
@@ -1455,10 +1455,10 @@ File: graphs/testes_capella/result/deadlines-r8-100.png Graphic file (type png)
 
 <use graphs/testes_capella/result/deadlines-r8-100.png>
 Package pdftex.def Info: graphs/testes_capella/result/deadlines-r8-100.png used
- on input line 169.
+ on input line 170.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
 
-Overfull \vbox (15.38986pt too high) detected at line 169
+Overfull \vbox (15.38986pt too high) detected at line 170
  []
 
 [20
@@ -1469,10 +1469,10 @@ File: graphs/testes_capella/result/deadlines-r4-500.png Graphic file (type png)
 
 <use graphs/testes_capella/result/deadlines-r4-500.png>
 Package pdftex.def Info: graphs/testes_capella/result/deadlines-r4-500.png used
- on input line 176.
+ on input line 177.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
 
-Overfull \vbox (15.38986pt too high) detected at line 176
+Overfull \vbox (15.38986pt too high) detected at line 177
  []
 
 [21
@@ -1483,10 +1483,10 @@ File: graphs/testes_capella/result/deadlines-r8-500.png Graphic file (type png)
 
 <use graphs/testes_capella/result/deadlines-r8-500.png>
 Package pdftex.def Info: graphs/testes_capella/result/deadlines-r8-500.png used
- on input line 183.
+ on input line 184.
 (pdftex.def)             Requested size: 307.28987pt x 204.85419pt.
 
-Overfull \vbox (15.38986pt too high) detected at line 183
+Overfull \vbox (15.38986pt too high) detected at line 184
  []
 
 [22
@@ -1501,11 +1501,11 @@ Overfull \vbox (15.38986pt too high) detected at line 183
 \tf@snm=\write8
 \openout8 = `slide.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 185.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 185.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 186.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 186.
  (./slide.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 185.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 185.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 186.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 186.
 Package rerunfilecheck Info: File `slide.out' has not changed.
 (rerunfilecheck)             Checksum: E739BD9D5247589C8D15729393B006B3;107.
 
@@ -1516,13 +1516,13 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 185.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 186.
  ) 
 Here is how much of TeX's memory you used:
- 21112 strings out of 493089
- 417022 string characters out of 6134841
+ 21124 strings out of 493089
+ 417118 string characters out of 6134841
  587711 words of memory out of 5000000
- 24029 multiletter control sequences out of 15000+600000
+ 24041 multiletter control sequences out of 15000+600000
  14581 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  71i,13n,83p,1750b,682s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1536,7 +1536,7 @@ usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></
 usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi12.pfb></
 usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></u
 sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on slide.pdf (22 pages, 507408 bytes).
+Output written on slide.pdf (22 pages, 507558 bytes).
 PDF statistics:
  223 PDF objects out of 1000 (max. 8388607)
  153 compressed objects within 2 object streams
