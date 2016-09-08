@@ -15,9 +15,10 @@ def confidence_interval(data, confidence=0.95):
 	return m, h
 
 n = sys.argv[2]
+p = float(sys.argv[3])
 
 print("deadt_mult", "tipo_1_m", "tipo_1_ic", "tipo_2_m", "tipo_2_ic", "tipo_3_m", "tipo_3_ic")
-for deadt in np.linspace(0, 180, 50):
+for deadt in np.linspace(0, float(n)*2.5/p*1.1, 50):
 	r = []
 	for l in range(1,4):
 		c = []

@@ -4,6 +4,7 @@ set output file.'.png'
 
 set key inside left top vertical Right noreverse enhanced autotitle box lt black linewidth 1.000 dashtype solid
 set yrange [0: 1.1]
+set xrange [0: *]
 
 plot file using 1:2:($2+$3):($2-$3) with yerrorlines lw 1.6 title 'First-Come First-Served', \
 	"" using 1:4:($4+$5):($4-$5) with yerrorlines lw 1.6 title 'Shortest Remaining Time Next', \
