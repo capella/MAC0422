@@ -39,14 +39,14 @@
 	\justifying
 	Antes do nosso escalonador iniciar, adicionamos esse processo a ele. Esse processo tem a função criar os nossos outros processos. Ou seja, ele verifica se já está na hora de adicionar outros processos no escalonador baseado no arquivo de trace. 
 	
-	Quando existe processo pedentes a serem criados, ele espera 0,5s e depois adiciona a sí mesmo no escalonador. 
+	Quando existe processo pedentes a serem criados, ele espera 0,05s e depois adiciona a sí mesmo no escalonador. 
 \end{frame}
 
 
 \begin{frame}{Exemplo}
 	Vamos executar esse exemplo com os 4 algorítimos e pintar cada processo com uma cor.
 	\begin{columns}[T,onlytextwidth]
-		\column{0.05\textwidth}
+		\column{0.5\textwidth}
 		
 		0 1 processo1 20 \newline
 		0 2 processo2 20 \newline
@@ -77,6 +77,109 @@
 
 \begin{frame}{Exemplo}
 	\includegraphics[width=\textwidth]{graphs/comparacao}
+	
+	{\tiny *Nesse exemplo o load\_process está com intervalos de 0,5s.}
+\end{frame}
+
+\section{Testes}
+
+\begin{frame}{Gerando Valores}
+	\justifying
+	Escolhemos um número de processos $n$ e escolhemos um valor $x$ entre  0 e 10, uniformemente. Depois escolhemos $y$ entre $x$ e 10. $x$ é o momento em que o processo inicia e $y-x$ é a duração do processo. Considere as unidades em segundos.
+	
+	Veja que $\overline{x} = 5.0$ e $\overline{y} = 7.5$ e portanto o tempo médio dos nossos processos é de 2.5s.
+\end{frame}
+
+
+\begin{frame}{Tempo Gasto}
+	\begin{columns}[T,onlytextwidth]
+		\column{0.5\textwidth}
+		\justifying
+		Utilizamos $n = 10, 100, 500$ e realizamos 30 testes para cada tipo de escalonador para 4 e 8 processadores. Sabendo que o tempo médio esperado era 2.5s, o tempo total gasto previsto foi de $610 \times 30 \times 3 \times 2.5s \times 2 = 274500s$, que equivale a $76.25h$.
+		
+		Para agilizar o processo utilizamos um serviço de cloud com a seguinte configuração descrita ao lado.
+		
+		\column{0.5\textwidth}
+		
+		\metroset{block=fill}
+		\begin{center}
+			\includegraphics[scale=0.4]{cloud}
+			
+			{\tiny *Finalizamos tudo em menos de 4h.}
+		\end{center}
+		
+	\end{columns}
+\end{frame}
+
+
+\begin{frame}{Trocas de Contexto, $n = 10$ e $4$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/trocas-r4-10}
+\end{frame}
+
+
+\begin{frame}{Trocas de Contexto, $n = 10$ e $8$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/trocas-r8-10}
+\end{frame}
+
+
+\begin{frame}{Trocas de Contexto, $n = 100$ e $4$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/trocas-r4-100}
+\end{frame}
+
+
+\begin{frame}{Trocas de Contexto, $n = 100$ e $8$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/trocas-r8-100}
+\end{frame}
+
+
+\begin{frame}{Trocas de Contexto, $n = 500$ e $4$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/trocas-r4-500}
+\end{frame}
+
+
+\begin{frame}{Trocas de Contexto, $n = 500$ e $8$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/trocas-r8-500}
+\end{frame}
+
+\begin{frame}{Porcentagem de Deadlines Compridos, $n = 10$ e $4$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r4-10}
+	
+	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
+\end{frame}
+
+
+\begin{frame}{Porcentagem de Deadlines Compridos, $n = 10$ e $8$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r8-10}
+	
+	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
+\end{frame}
+
+
+\begin{frame}{Porcentagem de Deadlines Compridos, $n = 100$ e $4$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r4-100}
+	
+	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
+\end{frame}
+
+
+\begin{frame}{Porcentagem de Deadlines Compridos, $n = 100$ e $8$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r8-100}
+	
+	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
+\end{frame}
+
+
+\begin{frame}{Porcentagem de Deadlines Compridos, $n = 500$ e $4$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r4-500}
+	
+	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
+\end{frame}
+
+
+\begin{frame}{Porcentagem de Deadlines Compridos, $n = 500$ e $8$ CPUs}
+	\includegraphics[width=\textwidth]{graphs/testes_capella/result/deadlines-r8-500}
+	
+	{\tiny No eixo $x$ temos o tempo em segundos que foi adicionado $y$ do processo para determinar o deadline.}
 \end{frame}
 
 \end{document}
