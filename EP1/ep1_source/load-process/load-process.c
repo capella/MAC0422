@@ -63,6 +63,7 @@ void load_file (void *filename, int (*f) (void *)) {
         lista[size-1] = novo;
     }
     remaning = size;
+    fclose(entrada);
 
     /* fprintf(stderr, "Arquivo carregado!\n"); */
 }
