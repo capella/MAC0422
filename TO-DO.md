@@ -32,10 +32,10 @@
 - [x] Gerar dois binários: um referente à parte I e outro referente à parte II.
 
 ## Entrega:
-- [ ] Códigos em C.
-- [ ] LEIAME.txt
-- [ ] Makefile
-- [ ] Apresentação .pdf
+- [x] Códigos em C.
+- [x] LEIAME.txt
+- [x] Makefile
+- [x] Apresentação .pdf
 
 ## Apresentação:
 - [ ] Resumo dos resultados.
@@ -59,3 +59,5 @@
 
 - [ ] Nome no EP:
     `ep1-gabriel-luis`
+
+## Escrever o LEIAME (README.md)
