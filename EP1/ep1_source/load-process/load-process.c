@@ -38,8 +38,8 @@ void load_file (void *filename, int (*f) (void *)) {
     size = 0;
     max_size = 10;
 
-    lista = malloc (sizeof(Load) * max_size);
-    tmp_name = malloc (MAX_PROCESS_NAME_SIZE * sizeof(char));
+    lista = malloc2 (sizeof(Load) * max_size);
+    tmp_name = malloc2 (MAX_PROCESS_NAME_SIZE * sizeof(char));
 
     while (1) {
         if (fscanf(entrada, "%lf", &tmp_to) == EOF) break;
@@ -50,19 +50,18 @@ void load_file (void *filename, int (*f) (void *)) {
         size++;
         if (size > max_size) {
             max_size *= 2;
-            tmp_lista = realloc (lista, max_size * sizeof(Load));
+            tmp_lista = realloc2 (lista, max_size * sizeof(Load));
             lista = tmp_lista;
         }
-        novo = malloc(sizeof(struct p_load));
+        novo = malloc2(sizeof(struct p_load));
         novo->to = tmp_to;
         novo->dt = tmp_dt;
         novo->deadline = tmp_deadline;
         novo->name = tmp_name;
         novo->line = size-1;
-        tmp_name = malloc (MAX_PROCESS_NAME_SIZE * sizeof(char));
+        tmp_name = malloc2 (MAX_PROCESS_NAME_SIZE * sizeof(char));
         lista[size-1] = novo;
     }
-    free (tmp_name);
     remaning = size;
 
     /* fprintf(stderr, "Arquivo carregado!\n"); */
@@ -86,12 +85,11 @@ int load (void * exec) {
     for (i = 0; i < size; ++i) {
         if (lista[i] != NULL && lista[i]->to <= time) {
             /* fprintf(stderr, "%d %s\n", i,lista[i]->name); */
-            n = malloc(sizeof(double));
+            n = malloc2(sizeof(double));
             *n = lista[i]->dt;
             p_exec(lista[i]->name, lista[i]->line, *n, func, (void *)n);
             remaning--;
 
-            free (lista[i]);
             lista[i] = NULL;
             numero_executados++;
         }
@@ -101,10 +99,9 @@ int load (void * exec) {
         sleep2(WAIT_TIME);
     }
     if (remaning > 0) {
-        f = malloc(sizeof(struct function));
+        f = malloc2(sizeof(struct function));
         f->f = p_exec;
         p_exec("load_process", -1,  WAIT_TIME, load, (void *)f);
-        free (f);
     }
     return 0;
 }

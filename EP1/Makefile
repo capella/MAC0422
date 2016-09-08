@@ -6,6 +6,7 @@ default:
 	make clean2
 
 clean:
+	find ./ -name ".DS_Store" -depth -exec rm {} \;
 	$(RM) ep1 ep1sh
 
 clean2:

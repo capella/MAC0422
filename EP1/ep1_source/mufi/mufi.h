@@ -15,6 +15,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include "../time2/time2.h"
+#include "../collector/collector.h"
 
 #define QUANTON 0.5
 

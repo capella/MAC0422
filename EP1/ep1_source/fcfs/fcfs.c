@@ -45,7 +45,7 @@ void fcfs_exec(char *name, int line, double remaining, int (*func) (void *), voi
 
     while (tmp != NULL && tmp->next != NULL) tmp = tmp->next;
 
-    novo = malloc(sizeof(struct process_fcgs));
+    novo = malloc2(sizeof(struct process_fcgs));
     novo->name = name;
     novo->line = line;
     novo->func = func;
@@ -100,10 +100,6 @@ static void * escalona (void * n) {
                 fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
             }
 
-
-            /*free (atual->name);
-            free (atual->arg);
-            free (atual);*/
         } else {
             flag = (running == 0 && head == NULL);
             pthread_mutex_unlock(&head_lock);
@@ -128,8 +124,8 @@ void fcfs_init(char *log_file, int output) {
     output_info = output;
     output_line = 0;
 
-    threads_ids = malloc(sizeof(pthread_t) * threads);
-    cpu_n = malloc(sizeof(int) * threads);
+    threads_ids = malloc2(sizeof(pthread_t) * threads);
+    cpu_n = malloc2(sizeof(int) * threads);
     if (pthread_mutex_init(&head_lock, NULL) != 0 &&
         pthread_mutex_init(&file_lock, NULL) != 0) {
         fprintf(stderr, "Erro ao criar mutex!\n");

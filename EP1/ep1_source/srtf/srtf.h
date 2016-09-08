@@ -15,6 +15,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include "../time2/time2.h"
+#include "../collector/collector.h"
 
 /* Adiciona um novo processo a fila de execucao */
 void srtf_exec(char *name, int line, double remaining, int (*func) (void *), void *arg);

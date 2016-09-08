@@ -51,7 +51,7 @@ void srtf_exec(char *name, int line, double remaining, int (*func) (void *), voi
         fprintf(stderr, "%.3f\t       NEW '%s'\n",  time2(), name);
     }
 
-    novo = malloc(sizeof(struct process_strf));
+    novo = malloc2(sizeof(struct process_strf));
     novo->name = name;
     novo->line = line;
     novo->func = func;
@@ -168,10 +168,6 @@ static void * escalona (void * n) {
                     fprintf(stderr, "%.3f\t %3d > END '%s'\n", time2(), *number, atual->name);
                 }
             }
-
-            /*free (atual->name);
-            free (atual->arg);
-            free (atual);*/
         } else {
             flag = running == 0 && head == NULL;
             pthread_mutex_unlock(&head_lock);
@@ -194,9 +190,9 @@ void srtf_init(char *log_file, int output) {
     output_info = output;
     output_line = 0;
 
-    threads_ids = malloc(sizeof(pthread_t) * threads);
-    cpu_n = malloc(sizeof(int) * threads);
-    notify = malloc(sizeof(int) * threads);
+    threads_ids = malloc2(sizeof(pthread_t) * threads);
+    cpu_n = malloc2(sizeof(int) * threads);
+    notify = malloc2(sizeof(int) * threads);
     context_changes = 0;
 
     if (pthread_mutex_init(&head_lock, NULL) != 0 &&
