@@ -11,3 +11,4 @@ clean:
 clean2:
 	cd ep1sh_source && $(MAKE) clean
 	cd ep1_source && $(MAKE) clean
+# ./ep1 1 slides/graphs/testes_capella/10/11 /dev/null c

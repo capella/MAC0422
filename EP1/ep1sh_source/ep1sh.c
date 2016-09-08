@@ -101,7 +101,6 @@ char **make_args (char *str, int *argc) {
         if (*argc == result_s-1) {
             result_s *= 2;
             result_tmp = realloc (result, sizeof(char*)*result_s);
-            free (result);
             result = result_tmp;
         }
         result[*argc-1] = word;
