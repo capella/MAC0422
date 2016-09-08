@@ -15,6 +15,7 @@ int nada (void *duracao);
 int main(int argc, char const *argv[]) {
     int tipo;
     int output_info = 0;
+    Function f = NULL;
 
     sscanf (argv[1],"%d",&tipo);
     if (argc == 5) {
@@ -42,9 +43,14 @@ int main(int argc, char const *argv[]) {
     }
 
     load_file((void *)argv[2], nada);
-    p_exec("load_process", -1, 0, load, (void *)p_exec);
+
+    f = malloc(sizeof(struct function));
+    f->f = p_exec;
+
+    p_exec("load_process", -1, 0, load, (void *)f);
 
     p_init((char *)argv[3], output_info);
+    free (f);
 
     return 0;
 }

@@ -15,6 +15,11 @@
 
 #define WAIT_TIME 0.05 /* segundos */
 
+struct function {
+	void (*)() f;
+};
+typedef struct function * Function;
+
 void load_file (void *filename, int (*) (void *));
 
 /* Le o arquivos com os processos (se nunca foi lido);
