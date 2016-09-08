@@ -23,6 +23,8 @@ Note que não será mostrado o processo 'load_process'.
 
 ## Como funciona.
 
-Esse escalonador simula um escalonador com x xpus, sendo x o número de cpus reais do usuário. O programa cria uma thread para cada cpu. O escalonador tem 4 funcoes principais exec (adiciona um novo processo), init (liga o escalonador), run (verifica se o processo atual deve continuar rodando). 
+Esse escalonador simula um escalonador com x cpus, sendo x o número de cpus reais do usuário. O programa cria uma thread para cada cpu. O escalonador tem 4 funções principais exec (adiciona um novo processo), init (liga o escalonador), run (verifica se o processo atual deve continuar rodando). 
 
-Antes de iniciar o escolador, ele deve er um processo que crie os outros processos. Esse processo recebe o nome de 'load_process'.
+Antes de iniciar o escalonador, ele deve er tum processo que crie os outros processos. Esse processo recebe o nome de 'load_process'.
+
+### Para mais informações, acesse http://github.com/capellaresumo/MAC0422
