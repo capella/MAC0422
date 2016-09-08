@@ -1,11 +1,12 @@
-/* //////////////////////////////////////////////////////////////
-// 
-// Autor: Gabriel Capella
-// Numero USP: 8962078
-// Sigla: GABRIELC
-// Data: 2015-10-13
-// 
-////////////////////////////////////////////////////////////// */
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo: fcfs.h
+ *  Descrição: Implementa as funções exec, init e run usando o 
+ *             usando o escalonador FCFS (Fist come first served.)
+ ********************************************************************/      
+
 #ifndef FCFS_H
 #define FCFS_H
 
@@ -17,13 +18,13 @@
 #include "../time2/time2.h"
 #include "../collector/collector.h"
 
-/* Adiciona um novo processo a fila de execucao */
+/* Adiciona um novo processo à fila de execução */
 void fcfs_exec(char *name, int line, double remaining, int (*func) (void *), void *arg);
 
-/* Inicia o escalonador. precisa ter um processo na fila antes de iniciar */
+/* Inicia o escalonador. Precisa ter um processo na fila antes de iniciar */
 void fcfs_init(char *log_file, int output);
 
-/* chamado em tempos em tesmpos pelo processo */
+/* Chamado em tempos em tempos pelo processo */
 int fcfs_run();
 
 #endif

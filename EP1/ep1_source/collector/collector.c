@@ -1,11 +1,11 @@
-/* //////////////////////////////////////////////////////////////
-// 
-// Autor: Gabriel Capella
-// Numero USP: 8962078
-// Sigla: GABRIELC
-// Data: 2015-10-13
-// 
-////////////////////////////////////////////////////////////// */
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo:   collector.c
+ *  Descrição: Implementa as funções da biblioteca collector.h
+ ********************************************************************/   
+
 #include "collector.h"
 
 struct reserved {

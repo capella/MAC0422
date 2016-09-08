@@ -1,11 +1,12 @@
-/* //////////////////////////////////////////////////////////////
-// 
-// Autor: Gabriel Capella
-// Numero USP: 8962078
-// Sigla: GABRIELC
-// Data: 2015-10-13
-// 
-////////////////////////////////////////////////////////////// */
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo:   fcfs.c
+ *  Descrição: Implementa as funções exec, init e run usando o 
+ *             escalonador FCFS (First come first served.)
+ ********************************************************************/      
+
 #include "fcfs.h"
 #define ALL 99
 #define DEF 100
@@ -151,4 +152,3 @@ void fcfs_init(char *log_file, int output) {
 int fcfs_run() {
     return 0;
 }
-

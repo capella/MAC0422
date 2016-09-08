@@ -1,12 +1,12 @@
-/* //////////////////////////////////////////////////////////////
-// 
-// Autor: Gabriel Capella
-// Numero USP: 8962078
-// Sigla: GABRIELC
-// Data: 2015-10-13
-// 
-////////////////////////////////////////////////////////////// */
-#ifndef SRTF_H
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo:   srtf.c
+ *  Descrição: Biblioteca de funções que usam o escalonador SRTN 
+ *             (Shortest Remaining Time Next).
+ ********************************************************************/  
+
 #define SRTF_H
 
 #include <stdio.h>

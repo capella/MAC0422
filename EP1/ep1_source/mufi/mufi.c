@@ -1,11 +1,12 @@
-/* //////////////////////////////////////////////////////////////
-// 
-// Autor: Gabriel Capella
-// Numero USP: 8962078
-// Sigla: GABRIELC
-// Data: 2015-10-13
-// 
-////////////////////////////////////////////////////////////// */
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo:   mufi.h
+ *  Descrição: Implementa as funções exec, init e run usando o 
+ *             usando o escalonador de múltiplas filas.
+ ********************************************************************/  
+ 
 #include "mufi.h"
 #define ALL 99
 #define DEF 100
@@ -81,7 +82,7 @@ static void * escalona (void * n) {
             atual = head;
             head = head->next;
             running++;
-            end_time[*number] = time2() + atual->priority * QUANTON;
+            end_time[*number] = time2() + atual->priority * QUANTUM;
             pthread_mutex_unlock(&head_lock);
 
             if (atual->line >= 0 && output_info == DEF) {

@@ -1,11 +1,11 @@
-/* //////////////////////////////////////////////////////////////
-// 
-// Autor: Gabriel Capella
-// Numero USP: 8962078
-// Sigla: GABRIELC
-// Data: 2015-10-13
-// 
-////////////////////////////////////////////////////////////// */
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo:   load-process.c
+ *  Descrição: Implementa as funções que carregam os processos.
+ ********************************************************************/      
+
 #include "load-process.h"
 #define MAX_PROCESS_NAME_SIZE 100
 

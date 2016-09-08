@@ -1,3 +1,18 @@
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo:    ep1sh.c
+ *  Compilação: make
+ *  Execução:   ./ep1sh
+ *  Descrição:  Simula um bash que executa os seguintes comandos:
+ *              • /bin/ls -l
+ *              • /bin/date
+ *              • ./ep1 <argumentos do EP1>
+ *              • chmod <modo numérico> <arquivo no diretório atual>
+ *              • id -u
+ ********************************************************************/      
+
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +33,7 @@
  * se tem que finalizar o programa ou 0. */
 int process (char *str, char **env);
 
-/* Recebe a string str e devolve um vetor de strings make_args e o numero
+/* Recebe a string str e devolve um vetor de strings make_args e o número
    (argc) de elementos nesse vetor. */
 char **make_args (char *str, int *argc);
 
@@ -114,4 +129,3 @@ void clear_args (char **args) {
     if (args == NULL) return;
     free (args);
 }
-

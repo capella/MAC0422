@@ -1,11 +1,12 @@
-/* //////////////////////////////////////////////////////////////
-// 
-// Autor: Gabriel Capella
-// Numero USP: 8962078
-// Sigla: GABRIELC
-// Data: 2015-10-13
-// 
-////////////////////////////////////////////////////////////// */
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo:   srtf.c
+ *  Descrição: Implementa as funções exec, init e run usando o 
+ *             escalonador SRTN (Shortest Remaining Time Next).
+ ********************************************************************/   
+
 #include "srtf.h"
 #define ALL 99
 #define DEF 100

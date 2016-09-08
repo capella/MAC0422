@@ -1,3 +1,17 @@
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo: ep1.c
+ *  Compilação: make
+ *  Execução: ./ep1 n <entrada> <saida> 
+ *  Descrição: Simula um escalonador de processos (o usuário escolhe 
+               qual: n = 1 para FCFS, n = 2 para SRTN e n = 3 para 
+               Múltiplas Filas) que recebe um arquivo com processos 
+               (<entrada>) e que devolve um arquivo com informações
+               sobre o cumprimento de processos. 
+ ********************************************************************/     
+
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
@@ -66,13 +80,13 @@ int nada (void *duracao) {
     while (init + * duration > time2()) {
         soma++;
 
-        /* pergunta para o escalonador se pode continuar rodando */
+        /* Pergunta para o escalonador se pode continuar rodando */
         if (p_run()) {
             * duration = * duration - time2() + init;
-            /* retorna 1 para sinalizar que o processo deve ser interompido */
+            /* Retorna 1 para sinalizar que o processo deve ser interompido. */
             return 1;
         }
     }
-    /* processo finalizado */
+    /* Processo finalizado */
     return 0;
 }

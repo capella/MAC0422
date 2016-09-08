@@ -1,11 +1,11 @@
-/* //////////////////////////////////////////////////////////////
-// 
-// Autor: Gabriel Capella
-// Numero USP: 8962078
-// Sigla: GABRIELC
-// Data: 2015-10-13
-// 
-////////////////////////////////////////////////////////////// */
+/********************************************************************
+ *  Nomes: Gabriel Capella                       Números USP: 8962078 
+ *         Luís Felipe de Melo Costa Silva                    9297961
+ * 
+ *  Arquivo:   load-process.h
+ *  Descrição: Biblioteca para carregamento de processos.
+ ********************************************************************/      
+
 #ifndef LOAD_H
 #define LOAD_H
 
@@ -17,17 +17,20 @@
 #define WAIT_TIME 0.05 /* segundos */
 
 struct function {
-	void (*f)();
+    void (*f)();
 };
 typedef struct function * Function;
 
+/* Pega as informações do processo do arquivo de entrada, e coloca em
+    um vetor de ponteiros para struct de processos. */
 void load_file (void *filename, int (*) (void *));
 
-/* Le o arquivos com os processos (se nunca foi lido);
-   Verifica o tempo de inicio dos processos e inicia sua execução caso seja a hora;
-   Coloca ela mesmo na fila de processos; 
-   void (*exec)(void) função do escalonador que cria os processos;
-   void (*p) processo a ser criado */
+/* Lê o arquivos com os processos (se nunca foi lido);
+    Verifica o tempo de início dos processos e inicia sua execução caso
+    seja a hora;
+    Coloca ela mesma na fila de processos; 
+    void (*exec)(void) função do escalonador que cria os processos;
+    void (*p) processo a ser criado */
 int load (void * exec);
 
 #endif
