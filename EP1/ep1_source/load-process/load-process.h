@@ -9,9 +9,10 @@
 #ifndef LOAD_H
 #define LOAD_H
 
-#include <stdlib.h> /* malloc, free, realloc, EXIT_SUCCESS */
+#include <stdlib.h> /* malloc2, free, realloc2, EXIT_SUCCESS */
 #include <stdio.h>  /* EOF, printf, getchar */
 #include "../time2/time2.h"
+#include "../collector/collector.h"
 
 #define WAIT_TIME 0.05 /* segundos */
 

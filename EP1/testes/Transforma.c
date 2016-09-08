@@ -3,7 +3,7 @@
 
 int main (int argc, char **argv) {
 	int N = atoi (argv[1]);
-	int *todos = malloc (N * sizeof(int));
+	int *todos = malloc2 (N * sizeof(int));
 	int i;
 	int numero;
 	printf("%d\n", N);

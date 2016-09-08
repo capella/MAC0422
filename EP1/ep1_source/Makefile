@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS= -g -Wall -Wno-unused-result -O0 -pedantic
 OBJ = ep1.o
 
-default: time2.o fcfs.o srtf.o mufi.o load-process.o ep1.o 
+default: collector.o time2.o fcfs.o srtf.o mufi.o load-process.o ep1.o 
 	$(CC) $(CFLAGS) *.o -pthread -o ep1
 
 ep1.o: ep1.c
@@ -21,6 +21,9 @@ mufi.o: mufi/mufi.c mufi/mufi.h
 	$(CC) $(CFLAGS) -ansi -c $^
 
 time2.o: time2/time2.c time2/time2.h
+	$(CC) $(CFLAGS) -ansi -c $^
+
+collector.o: collector/collector.c collector/collector.h
 	$(CC) $(CFLAGS) -ansi -c $^
 
 clean:

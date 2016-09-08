@@ -14,17 +14,32 @@ struct reserved {
 };
 typedef struct reserved * R;
 
-static R head;
+static R head = NULL;
 
 void * malloc2 (int size) {
     R new;
-    new = malloc (sizeof());
+    new = malloc (sizeof(struct reserved));
+    new->add = malloc(size);
+    new->next = head;
+    head = new;
+    return new->add;
 }
 
 void * realloc2 (void *value, int size) {
-
+    R new;
+    new = malloc (sizeof(struct reserved));
+    new->add = realloc (value, size);
+    new->next = head;
+    head = new;
+    return new->add;
 }
 
-int free_all (void * exec) {
-
+void free_all () {
+    R tmp;
+    while (head != NULL) {
+        free (head->add);
+        tmp = head;
+        head = head->next;
+        free (tmp);
+    }
 }

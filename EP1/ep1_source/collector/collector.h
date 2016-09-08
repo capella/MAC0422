@@ -15,6 +15,6 @@
 void * malloc2 (int size);
 void * realloc2 (void *value, int size);
 
-int free_all (void * exec);
+void free_all ();
 
 #endif
