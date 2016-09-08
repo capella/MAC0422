@@ -16,7 +16,7 @@
 #define WAIT_TIME 0.05 /* segundos */
 
 struct function {
-	void (*)() f;
+	void (*f)();
 };
 typedef struct function * Function;
 

@@ -73,12 +73,14 @@ void *(void (*)(char *, int, int (*)(void*), void *))
 */
 int load (void * exec) {
     Function f = NULL;
+    Function in = NULL;
     double *n;
     int i = 0;
     double time;
     int numero_executados = 0;
     void (*p_exec)(char *, int, double, int (*)(void *), void *);
-    p_exec = (void (*)(char *, int, double, int (*)(void *),void *)) exec->f;
+    in = exec;
+    p_exec = (void (*)(char *, int, double, int (*)(void *),void *)) in->f;
     time = time2();
 
     for (i = 0; i < size; ++i) {
